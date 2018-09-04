@@ -21,3 +21,7 @@ class Payment(models.Model):
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     amount_cents = models.fields.BigIntegerField('amount in cents')
+
+    def __repr__(self):
+        return "Payment(invoice={}, user={}, amount_cents={})" \
+            .format(self.invoice, self.user, self.amount_cents)
