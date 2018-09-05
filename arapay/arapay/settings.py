@@ -29,6 +29,7 @@ ALLOWED_HOSTS = ['localhost', 'abydos', 'avava.gyarab.cz']
 # Application definition
 
 INSTALLED_APPS = [
+    'googleoauth2.apps.Googleoauth2Config',
     'payments.apps.PaymentsConfig',
     'corsheaders',
     'django.contrib.admin',

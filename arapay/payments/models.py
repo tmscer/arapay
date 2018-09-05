@@ -1,5 +1,3 @@
-import oauth2client
-from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
 
@@ -20,7 +18,7 @@ class Invoice(models.Model):
 
 class Payment(models.Model):
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     amount_cents = models.fields.BigIntegerField('amount in cents')
 
     def __repr__(self):

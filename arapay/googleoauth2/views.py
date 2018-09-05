@@ -23,6 +23,7 @@ def oauthcallback(request):
         # Code received
         credentials = FLOW.step2_exchange(code)
         print(credentials)
+        print(type(credentials))
         return HttpResponse('login successful')
 
     error = request.GET.get('error', '')
