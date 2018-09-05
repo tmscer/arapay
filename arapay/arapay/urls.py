@@ -13,7 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+
 from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import RedirectView
@@ -21,7 +21,10 @@ from django.views.generic import RedirectView
 urlpatterns = [
     path('p/', include('payments.urls')),
     path('', RedirectView.as_view(url='p/', permanent=False), name='index'),
-    path('admin/', admin.site.urls),
-    #url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
-]
 
+    path('', include('googleoauth2.urls')),
+
+    path('admin/', admin.site.urls),
+
+    # url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
+]
