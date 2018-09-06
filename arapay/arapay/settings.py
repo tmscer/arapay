@@ -40,21 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
-#language=JSON
-GOOGLE_OAUTH2_CLIENT_SECRETS_JSON = json.loads('''{
-  "web": {
-    "client_id": "1074118527326-7hr21vf1bk4lmisu61pcd1hf0v10immh.apps.googleusercontent.com",
-    "project_id": "arapay-215505",
-    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-    "token_uri": "https://www.googleapis.com/oauth2/v3/token",
-    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-    "client_secret": "gUDH-RK5GcS4wyhbTzKJACEN",
-    "redirect_uris": [
-      "http://localhost:8000/oauthcallback",
-      "https://localhost:8000/oauthcallback"
-    ]
-  }
-}''')
+
+GOOGLE_SECRETS_FILE = os.path.expanduser('~') + '/client_secrets/arapay/client_secret.json'
+with open(GOOGLE_SECRETS_FILE) as f:
+    GOOGLE_OAUTH2_CLIENT_SECRETS_JSON = json.loads(f.readlines())
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
