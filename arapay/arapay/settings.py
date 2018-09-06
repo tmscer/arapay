@@ -43,7 +43,7 @@ INSTALLED_APPS = [
 
 GOOGLE_SECRETS_FILE = os.path.expanduser('~') + '/client_secrets/arapay/client_secret.json'
 with open(GOOGLE_SECRETS_FILE) as f:
-    GOOGLE_OAUTH2_CLIENT_SECRETS_JSON = json.loads(f.readlines())
+    GOOGLE_OAUTH2_CLIENT_SECRETS_JSON = json.loads(''.join(f.readlines()))
 
 
 MIDDLEWARE = [
