@@ -22,9 +22,10 @@ urlpatterns = [
     path('p/', include('payments.urls')),
     path('', RedirectView.as_view(url='p/', permanent=False), name='index'),
 
+    # Google+ login
+    path('', include('social_django.urls', namespace='social')),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
-
-    path('soc/', include('social_django.urls', namespace='social')),
 
     # url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
 ]

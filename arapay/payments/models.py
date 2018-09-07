@@ -1,4 +1,3 @@
-import django
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.db import models
@@ -14,8 +13,8 @@ class Invoice(models.Model):
     amount_cents = models.fields.BigIntegerField('amount in cents')
 
     def __repr__(self):
-        return "Invoice(date_added={}, date_deadline={}, payment_group={}, description={}, amount_cents={})" \
-            .format(self.date_added, self.date_deadline, self.payment_group, self.description, self.amount_cents)
+        return "Invoice(name={}, description={}, date_added={}, date_deadline={}, amount_cents={})" \
+            .format(self.name, self.description, self.date_added, self.date_deadline, self.amount_cents)
 
 
 class Payment(models.Model):
