@@ -11,6 +11,7 @@ class Invoice(models.Model):
     date_added = models.fields.DateTimeField('date added')
     date_deadline = models.fields.DateTimeField('date due')
     amount_cents = models.fields.BigIntegerField('amount in cents')
+    groups = models.ManyToManyField(Group)
 
     def __repr__(self):
         return "Invoice(name={}, description={}, date_added={}, date_deadline={}, amount_cents={})" \
@@ -25,12 +26,3 @@ class Payment(models.Model):
     def __repr__(self):
         return "Payment(invoice={}, user={}, amount_cents={})" \
             .format(self.invoice, self.user, self.amount_cents)
-
-
-class InvoiceToGroup(models.Model):
-    invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
-    group = models.ForeignKey(Group, on_delete=models.CASCADE)
-
-    def __repr__(self):
-        return "InvoiceToGroup(invoice={}, group={})" \
-            .format(self.invoice, self.group)
