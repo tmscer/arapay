@@ -29,7 +29,7 @@ ALLOWED_HOSTS = ['localhost', 'abydos', 'avava.gyarab.cz']
 # Application definition
 
 INSTALLED_APPS = [
-    'googleoauth2.apps.Googleoauth2Config',
+    'social_django',
     'payments.apps.PaymentsConfig',
     'corsheaders',
     'django.contrib.admin',
@@ -40,10 +40,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend')
 
-GOOGLE_SECRETS_FILE = os.path.expanduser('~') + '/client_secrets/arapay/client_secret.json'
-with open(GOOGLE_SECRETS_FILE) as f:
-    GOOGLE_OAUTH2_CLIENT_SECRETS_JSON = json.loads(''.join(f.readlines()))
+_GOOGLE_SECRETS_FILE = os.path.expanduser('~') + '/client_secrets/arapay/client_secret.json'
+with open(_GOOGLE_SECRETS_FILE) as f:
+    GOOGLE_OAUTH2_CLIENT_SECRETS = json.loads(''.join(f.readlines()))
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = GOOGLE_OAUTH2_CLIENT_SECRETS['web']['client_id']
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = GOOGLE_OAUTH2_CLIENT_SECRETS['web']['client_secret']
 
 
 MIDDLEWARE = [

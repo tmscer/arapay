@@ -1,4 +1,6 @@
+import django
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
 from django.db import models
 
 User = get_user_model()
@@ -26,15 +28,10 @@ class Payment(models.Model):
             .format(self.invoice, self.user, self.amount_cents)
 
 
-class Group(models.Model):
-    name = models.fields.CharField('group name', max_length=32)
-
-
-class UserToGroup(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    group = models.ForeignKey(Group, on_delete=models.CASCADE)
-
-
 class InvoiceToGroup(models.Model):
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
+
+    def __repr__(self):
+        return "InvoiceToGroup(invoice={}, group={})" \
+            .format(self.invoice, self.group)
