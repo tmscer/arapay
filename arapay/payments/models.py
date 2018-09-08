@@ -9,7 +9,7 @@ User = get_user_model()
 
 class Invoice(models.Model):
     name = models.fields.CharField('invoice name', max_length=32)
-    description = models.fields.TextField('payment description', max_length=200)
+    description = models.fields.TextField('payment description', max_length=200, blank=True)
     date_added = models.fields.DateTimeField('date added', default=dt.now)
     date_deadline = models.fields.DateTimeField('date due')
     amount_cents = models.fields.BigIntegerField('amount in cents')
