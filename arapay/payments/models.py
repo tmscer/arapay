@@ -17,6 +17,10 @@ class Invoice(models.Model):
         return "Invoice(name={}, description={}, date_added={}, date_deadline={}, amount_cents={})" \
             .format(self.name, self.description, self.date_added, self.date_deadline, self.amount_cents)
 
+    class Meta:
+        verbose_name = 'invoice'
+        verbose_name_plural = 'invoices'
+
 
 class Payment(models.Model):
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
@@ -26,3 +30,7 @@ class Payment(models.Model):
     def __repr__(self):
         return "Payment(invoice={}, user={}, amount_cents={})" \
             .format(self.invoice, self.user, self.amount_cents)
+
+    class Meta:
+        verbose_name = 'payment'
+        verbose_name_plural = 'payments'
