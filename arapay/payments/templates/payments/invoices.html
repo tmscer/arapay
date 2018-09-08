@@ -12,7 +12,7 @@
         <nav class="main-nav">
             <ul class="nav">
                 <li>Logged in as <b>{{ username }}</b></li>
-                <li>Logout</li>
+                <li><a href="/accounts/logout/?next=/">Logout</a></li>
             </ul>
         </nav>
 
@@ -45,13 +45,14 @@
                     {% endfor %}
                 </table>
                 {% else %}
-                <h3>Congratulations! There are no unpaid invoices!</h3>
+                <h4>Congratulations! There are no unpaid invoices!</h4>
                 {% endif %}
             </section>
 
             {% if invoices.overpaid %}
             <section class="invoices-overpaid">
-                <h2>Overpaid Invoices</h2>
+                <h2>Overpaid Invoices - Please request a refund.</h2>
+
                 <table class="table table-striped">
                     <thead>
                     <tr>
@@ -77,9 +78,9 @@
             </section>
             {% endif %}
 
-            <h2>Paid Invoices</h2>
             <section class="invoices-paid">
-                {% if invoices %}
+                <h2>Paid Invoices</h2>
+                {% if invoices.paid %}
                 <table class="table table-striped">
                     <thead>
                     <tr>
@@ -103,7 +104,7 @@
                     {% endfor %}
                 </table>
                 {% else %}
-                <h3>It looks like there are no paid invoices yet.</h3>
+                <h4>It looks like there are no paid invoices yet.</h4>
                 {% endif %}
             </section>
 

@@ -1,5 +1,4 @@
 from django.db.models import Q, F
-from django.http import HttpResponse
 from django.shortcuts import render
 from rest_framework import viewsets
 
@@ -11,7 +10,7 @@ def index(request):
     if request.user.is_authenticated:
         groups = request.user.groups.all().values_list('id', 'name')
         group_ids = [g[0] for g in groups]
-        values = 'name', 'description', 'date_added', 'date_deadline', 'amount_cents', 'payment__amount_cents'
+        values = 'name', 'description', 'date_added', 'date_deadline', 'amount_cents', 'payment__user_id', 'payment__amount_cents'
 
         invoices_paid = Invoice.objects \
             .filter(groups__in=group_ids,
@@ -20,11 +19,18 @@ def index(request):
             .distinct() \
             .values(*values)
 
+        # unpaid invoices with amount paid = 0
         invoices_unpaid = Invoice.objects \
-            .filter(groups__in=group_ids) \
-            .filter(Q(payment__amount_cents__isnull=True) | Q(payment__amount_cents__lt=F('amount_cents'))) \
+            .filter(Q(payment__amount_cents__lt=F('amount_cents')) |
+                    Q(payment__amount_cents__isnull=True),
+                    groups__in=group_ids) \
             .distinct() \
             .values(*values)
+
+        # The invoice may have matched with someone else's payment
+        for inv in invoices_unpaid:
+            if inv['payment__user_id'] != request.user.id:
+                inv['payment__amount_cents'] = 0
 
         invoices_overpaid = Invoice.objects \
             .filter(groups__in=group_ids,
