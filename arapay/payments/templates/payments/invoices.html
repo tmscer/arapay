@@ -1,11 +1,11 @@
 {% extends "payments/base.html" %}
 
-{% block title %}Your Invoices - Arapay{% endblock %}
+{% block title %}Your Invoices - Arapay{% endblock title %}
 
 {% block nav_items %}
 <li>Logged in as <b>{{ username }}</b></li>
 <li><a href="/accounts/logout/?next=/">Logout</a></li>
-{% endblock %}
+{% endblock nav_items %}
 
 {% block content %}
 <div class="invoices">
@@ -102,4 +102,4 @@
 
     {% endif %}
 </div>
-{% endblock %}
+{% endblock content %}
