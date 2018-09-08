@@ -7,8 +7,8 @@ from payments.serializers import InvoiceSerializer, PaymentSerializer
 
 def index(request):
     if request.user.is_authenticated:
-        groups = request.user.groups.all().values_list('id', 'name')
-        group_ids = [g[0] for g in groups]
+        groups = request.user.groups.all().values()
+        group_ids = [g['id'] for g in groups]
 
         invoices_paid = []
         invoices_unpaid = []
