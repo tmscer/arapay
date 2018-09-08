@@ -35,7 +35,7 @@
                 <td>{{ i.date_added }}</td>
                 <td>{{ i.date_deadline }}</td>
                 <td>{{ i.amount_cents }}</td>
-                <td>{{ i.payment__amount_cents }}</td>
+                <td>{{ i.payment.amount_cents }}</td>
             </tr>
             <tr class="invoice-detail{% cycle '' ' grey-bg' %}">
                 <td colspan="5">
@@ -71,7 +71,7 @@
                 <td>{{ i.date_added }}</td>
                 <td>{{ i.date_deadline }}</td>
                 <td>{{ i.amount_cents }}</td>
-                <td>{{ i.payment__amount_cents }}</td>
+                <td>{{ i.payment.amount_cents }}</td>
             </tr>
             <tr class="invoice-detail{% cycle '' ' grey-bg' %}">
                 <td colspan="5">
@@ -104,7 +104,7 @@
                 <td>{{ i.date_added }}</td>
                 <td>{{ i.date_deadline }}</td>
                 <td>{{ i.amount_cents }}</td>
-                <td>{{ i.payment__amount_cents }}</td>
+                <td>{{ i.payment.amount_cents }}</td>
             </tr>
             <tr class="invoice-detail{% cycle '' ' grey-bg' %}">
                 <td colspan="5">
