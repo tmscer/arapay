@@ -40,11 +40,11 @@ def index(request):
 
         data = {'username': request.user.email,
                 'invoices': {
-                    'paid': list(invoices_paid),
-                    'unpaid': list(invoices_unpaid),
-                    'overpaid': list(invoices_overpaid),
+                    'paid': invoices_paid,
+                    'unpaid': invoices_unpaid,
+                    'overpaid': invoices_overpaid,
                 },
-                'groups': groups}
+                'groups': list(groups)}
         return render(request, 'payments/invoices.html', data)
     else:
         return render(request, 'payments/notloggedin.html')
