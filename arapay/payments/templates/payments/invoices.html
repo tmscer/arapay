@@ -2,96 +2,107 @@
 <html>
 {% include "payments/head.html" %}
 
-{% if var %}
-Hello <b>{{ var }}</b>!
-{% endif %}
-<hr/>
-
 <body>
 
 <div class="wrapper">
     <div class="container">
-        {% if invoices %}
 
-        {% if invoices.overpaid %}
-        <h2>Unpaid Invoices</h2>
-        <table>
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Date Added</th>
-                <th>Date Due</th>
-                <th>Amount Total</th>
-                <th>Amount Paid</th>
-            </tr>
-            </thead>
-            {% for i in invoices.overpaid %}
-            <tr>
-                <td>{{ i.name }}</td>
-                <td>{{ i.description }}</td>
-                <td>{{ i.date_added }}</td>
-                <td>{{ i.date_deadline }}</td>
-                <td>{{ i.amount_cents }}</td>
-                <td>{{ i.payment__amount_cents }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-        {% endif %}
 
-        {% if invoices.unpaid %}
-        <h2>Unpaid Invoices</h2>
-        <table>
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Date Added</th>
-                <th>Date Due</th>
-                <th>Amount Total</th>
-                <th>Amount Paid</th>
-            </tr>
-            </thead>
-            {% for i in invoices.unpaid %}
-            <tr>
-                <td>{{ i.name }}</td>
-                <td>{{ i.description }}</td>
-                <td>{{ i.date_added }}</td>
-                <td>{{ i.date_deadline }}</td>
-                <td>{{ i.amount_cents }}</td>
-                <td>{{ i.payment__amount_cents }}</td>
-            </tr>
-            {% endfor %}
-        </table>
+        {% if var %}
+        Hello <b>{{ var }}</b>!
         {% endif %}
+        <hr/>
 
-        {% if invoices %}
-        <h2>Paid Invoices</h2>
-        <table>
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Date Added</th>
-                <th>Date Due</th>
-                <th>Amount Total</th>
-                <th>Amount Paid</th>
-            </tr>
-            </thead>
-            {% for i in invoices.paid %}
-            <tr>
-                <td>{{ i.name }}</td>
-                <td>{{ i.description }}</td>
-                <td>{{ i.date_added }}</td>
-                <td>{{ i.date_deadline }}</td>
-                <td>{{ i.amount_cents }}</td>
-                <td>{{ i.payment__amount_cents }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-        {% endif %}
+        <main class="invoices">
+            {% if invoices %}
 
-        {% endif %}
+            {% if invoices.overpaid %}
+            <section class="invoices-unpaid">
+                <h2>Unpaid Invoices</h2>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Date Added</th>
+                        <th>Date Due</th>
+                        <th>Amount Total</th>
+                        <th>Amount Paid</th>
+                    </tr>
+                    </thead>
+                    {% for i in invoices.overpaid %}
+                    <tr>
+                        <td>{{ i.name }}</td>
+                        <td>{{ i.description }}</td>
+                        <td>{{ i.date_added }}</td>
+                        <td>{{ i.date_deadline }}</td>
+                        <td>{{ i.amount_cents }}</td>
+                        <td>{{ i.payment__amount_cents }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% endif %}
+            </section>
+
+            {% if invoices.unpaid %}
+            <section class="invoices-overpaid">
+                <h2>Unpaid Invoices</h2>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Date Added</th>
+                        <th>Date Due</th>
+                        <th>Amount Total</th>
+                        <th>Amount Paid</th>
+                    </tr>
+                    </thead>
+                    {% for i in invoices.unpaid %}
+                    <tr>
+                        <td>{{ i.name }}</td>
+                        <td>{{ i.description }}</td>
+                        <td>{{ i.date_added }}</td>
+                        <td>{{ i.date_deadline }}</td>
+                        <td>{{ i.amount_cents }}</td>
+                        <td>{{ i.payment__amount_cents }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% endif %}
+            </section>
+
+            {% if invoices %}
+            <section class="invoices-paid">
+                <h2>Paid Invoices</h2>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Date Added</th>
+                        <th>Date Due</th>
+                        <th>Amount Total</th>
+                        <th>Amount Paid</th>
+                    </tr>
+                    </thead>
+                    {% for i in invoices.paid %}
+                    <tr>
+                        <td>{{ i.name }}</td>
+                        <td>{{ i.description }}</td>
+                        <td>{{ i.date_added }}</td>
+                        <td>{{ i.date_deadline }}</td>
+                        <td>{{ i.amount_cents }}</td>
+                        <td>{{ i.payment__amount_cents }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% endif %}
+            </section>
+
+            {% endif %}
+        </main>
+
     </div>
 </div>
 </body>
