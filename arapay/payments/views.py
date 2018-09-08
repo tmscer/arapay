@@ -33,7 +33,7 @@ def index(request):
             .distinct() \
             .values(*values)
 
-        data = {'var': request.user.email,
+        data = {'username': request.user.email,
                 'invoices': {
                     'paid': list(invoices_paid),
                     'unpaid': list(invoices_unpaid),
@@ -42,8 +42,7 @@ def index(request):
                 'groups': groups}
         return render(request, 'payments/invoices.html', data)
     else:
-        return HttpResponse("Login to continue.<br><a href='%s'><button>Login</button></a>" %
-                            '/login/google-oauth2/?next=/')
+        return render(request, 'payments/notloggedin.html')
 
 
 # REST API VIEWS

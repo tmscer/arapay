@@ -1,53 +1,28 @@
 <!DOCTYPE html>
 <html>
-{% include "payments/head.html" %}
-
+<head>
+    {% include "payments/head.html" %}
+    <title>Your Invoices - Arapay</title>
+</head>
 <body>
 
 <div class="wrapper">
     <div class="container">
 
-
-        {% if var %}
-        Hello <b>{{ var }}</b>!
-        {% endif %}
-        <hr/>
+        <nav class="main-nav">
+            <ul class="nav">
+                <li>Logged in as <b>{{ username }}</b></li>
+                <li>Logout</li>
+            </ul>
+        </nav>
 
         <main class="invoices">
             {% if invoices %}
 
-            {% if invoices.overpaid %}
             <section class="invoices-unpaid">
                 <h2>Unpaid Invoices</h2>
-                <table>
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Date Added</th>
-                        <th>Date Due</th>
-                        <th>Amount Total</th>
-                        <th>Amount Paid</th>
-                    </tr>
-                    </thead>
-                    {% for i in invoices.overpaid %}
-                    <tr>
-                        <td>{{ i.name }}</td>
-                        <td>{{ i.description }}</td>
-                        <td>{{ i.date_added }}</td>
-                        <td>{{ i.date_deadline }}</td>
-                        <td>{{ i.amount_cents }}</td>
-                        <td>{{ i.payment__amount_cents }}</td>
-                    </tr>
-                    {% endfor %}
-                </table>
-                {% endif %}
-            </section>
-
-            {% if invoices.unpaid %}
-            <section class="invoices-overpaid">
-                <h2>Unpaid Invoices</h2>
-                <table>
+                {% if invoices.unpaid %}
+                <table class="table table-striped">
                     <thead>
                     <tr>
                         <th>Name</th>
@@ -69,13 +44,43 @@
                     </tr>
                     {% endfor %}
                 </table>
+                {% else %}
+                <h3>Congratulations! There are no unpaid invoices!</h3>
                 {% endif %}
             </section>
 
-            {% if invoices %}
+            {% if invoices.overpaid %}
+            <section class="invoices-overpaid">
+                <h2>Overpaid Invoices</h2>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Date Added</th>
+                        <th>Date Due</th>
+                        <th>Amount Total</th>
+                        <th>Amount Paid</th>
+                    </tr>
+                    </thead>
+                    {% for i in invoices.overpaid %}
+                    <tr>
+                        <td>{{ i.name }}</td>
+                        <td>{{ i.description }}</td>
+                        <td>{{ i.date_added }}</td>
+                        <td>{{ i.date_deadline }}</td>
+                        <td>{{ i.amount_cents }}</td>
+                        <td>{{ i.payment__amount_cents }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </section>
+            {% endif %}
+
+            <h2>Paid Invoices</h2>
             <section class="invoices-paid">
-                <h2>Paid Invoices</h2>
-                <table>
+                {% if invoices %}
+                <table class="table table-striped">
                     <thead>
                     <tr>
                         <th>Name</th>
@@ -97,6 +102,8 @@
                     </tr>
                     {% endfor %}
                 </table>
+                {% else %}
+                <h3>It looks like there are no paid invoices yet.</h3>
                 {% endif %}
             </section>
 
