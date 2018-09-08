@@ -27,7 +27,6 @@ def index(request):
             .values('id', 'name', 'description', 'date_added', 'date_deadline',
                     'amount_cents')
 
-        # The invoice may have matched with someone else's payment
         for i, inv in enumerate(invoices_unpaid):
             inv['payment__user_id'] = request.user.id
             payment = Payment.objects \
