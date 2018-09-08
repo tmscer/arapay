@@ -29,6 +29,7 @@ ALLOWED_HOSTS = ['localhost', 'abydos', 'avava.gyarab.cz']
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_framework',
     'social_django',
     'payments.apps.PaymentsConfig',
     'corsheaders',
