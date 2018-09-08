@@ -19,7 +19,6 @@ def index(request):
             .distinct() \
             .values(*values)
 
-        # unpaid invoices with amount paid = 0
         invoices_unpaid = Invoice.objects \
             .filter(Q(payment__amount_cents__lt=F('amount_cents')) |
                     Q(payment__amount_cents__isnull=True),
