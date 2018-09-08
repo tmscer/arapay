@@ -10,34 +10,40 @@ def index(request):
     if request.user.is_authenticated:
         groups = request.user.groups.all().values_list('id', 'name')
         group_ids = [g[0] for g in groups]
-        values = 'name', 'description', 'date_added', 'date_deadline', 'amount_cents', 'payment__user_id', 'payment__amount_cents'
 
         invoices_paid = Invoice.objects \
             .filter(groups__in=group_ids,
                     payment__user_id=request.user.id,
                     payment__amount_cents=F('amount_cents')) \
             .distinct() \
-            .values(*values)
+            .values('id', 'name', 'description', 'date_added', 'date_deadline',
+                    'amount_cents', 'payment__user_id', 'payment__amount_cents')
 
-        # unpaid invoices with amount paid = 0
         invoices_unpaid = Invoice.objects \
             .filter(Q(payment__amount_cents__lt=F('amount_cents')) |
                     Q(payment__amount_cents__isnull=True),
                     groups__in=group_ids) \
             .distinct() \
-            .values(*values)
+            .values('id', 'name', 'description', 'date_added', 'date_deadline',
+                    'amount_cents')
 
-        # The invoice may have matched with someone else's payment
-        for inv in invoices_unpaid:
-            if inv['payment__user_id'] != request.user.id:
+        for i, inv in enumerate(invoices_unpaid):
+            inv['payment__user_id'] = request.user.id
+            payment = Payment.objects \
+                .filter(invoice_id=inv['id'], user_id=request.user.id) \
+                .values()
+            if payment.first() is None:
                 inv['payment__amount_cents'] = 0
+            else:
+                inv['payment__amount_cents'] = payment.first()['amount_cents']
 
         invoices_overpaid = Invoice.objects \
             .filter(groups__in=group_ids,
                     payment__user_id=request.user.id,
                     payment__amount_cents__gt=F('amount_cents')) \
             .distinct() \
-            .values(*values)
+            .values('id', 'name', 'description', 'date_added', 'date_deadline',
+                    'amount_cents', 'payment__user_id', 'payment__amount_cents')
 
         data = {'username': request.user.email,
                 'invoices': {

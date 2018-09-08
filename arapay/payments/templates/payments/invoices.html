@@ -1,117 +1,117 @@
-<!DOCTYPE html>
-<html>
-<head>
-    {% include "payments/head.html" %}
-    <title>Your Invoices - Arapay</title>
-</head>
-<body>
+{% extends "payments/base.html" %}
+{% load static %}
 
-<div class="wrapper">
-    <div class="container">
+{% block head %}
+<script src="{% static 'payments/invoices.js' %}"></script>
+{% endblock head %}
 
-        <nav class="main-nav">
-            <ul class="nav">
-                <li>Logged in as <b>{{ username }}</b></li>
-                <li><a href="/accounts/logout/?next=/">Logout</a></li>
-            </ul>
-        </nav>
+{% block title %}Your Invoices - Arapay{% endblock title %}
 
-        <main class="invoices">
-            {% if invoices %}
+{% block nav_items %}
+<li>Logged in as <b>{{ username }}</b></li>
+<li><a href="/accounts/logout/?next=/">Logout</a></li>
+{% endblock nav_items %}
 
-            <section class="invoices-unpaid">
-                <h2>Unpaid Invoices</h2>
-                {% if invoices.unpaid %}
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Date Added</th>
-                        <th>Date Due</th>
-                        <th>Amount Total</th>
-                        <th>Amount Paid</th>
-                    </tr>
-                    </thead>
-                    {% for i in invoices.unpaid %}
-                    <tr>
-                        <td>{{ i.name }}</td>
-                        <td>{{ i.description }}</td>
-                        <td>{{ i.date_added }}</td>
-                        <td>{{ i.date_deadline }}</td>
-                        <td>{{ i.amount_cents }}</td>
-                        <td>{{ i.payment__amount_cents }}</td>
-                    </tr>
-                    {% endfor %}
-                </table>
-                {% else %}
-                <h4>Congratulations! There are no unpaid invoices!</h4>
-                {% endif %}
-            </section>
+{% block content %}
+<div class="invoices">
+    {% if invoices %}
 
-            {% if invoices.overpaid %}
-            <section class="invoices-overpaid">
-                <h2>Overpaid Invoices - Please request a refund.</h2>
+    <section class="invoices-unpaid">
+        <h2>Unpaid Invoices</h2>
+        {% if invoices.unpaid %}
+        <table class="table invoice-table">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Date Added</th>
+                <th>Date Due</th>
+                <th>Amount Total</th>
+                <th>Amount Paid</th>
+            </tr>
+            </thead>
+            {% for i in invoices.unpaid %}
+            <tr class="invoice-master{% cycle '' ' grey-bg' %}">
+                <td>{{ i.name }}</td>
+                <td>{{ i.description }}</td>
+                <td>{{ i.date_added }}</td>
+                <td>{{ i.date_deadline }}</td>
+                <td>{{ i.amount_cents }}</td>
+                <td>{{ i.payment__amount_cents }}</td>
+            </tr>
+            <tr class="invoice-detail">
+                <td colspan="6">
+                    <div>
+                        Hello world!
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <h4>Congratulations! There are no unpaid invoices!</h4>
+        {% endif %}
+    </section>
 
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Date Added</th>
-                        <th>Date Due</th>
-                        <th>Amount Total</th>
-                        <th>Amount Paid</th>
-                    </tr>
-                    </thead>
-                    {% for i in invoices.overpaid %}
-                    <tr>
-                        <td>{{ i.name }}</td>
-                        <td>{{ i.description }}</td>
-                        <td>{{ i.date_added }}</td>
-                        <td>{{ i.date_deadline }}</td>
-                        <td>{{ i.amount_cents }}</td>
-                        <td>{{ i.payment__amount_cents }}</td>
-                    </tr>
-                    {% endfor %}
-                </table>
-            </section>
-            {% endif %}
+    {% if invoices.overpaid %}
+    <section class="invoices-overpaid">
+        <h2>Overpaid Invoices - Please request a refund.</h2>
 
-            <section class="invoices-paid">
-                <h2>Paid Invoices</h2>
-                {% if invoices.paid %}
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Date Added</th>
-                        <th>Date Due</th>
-                        <th>Amount Total</th>
-                        <th>Amount Paid</th>
-                    </tr>
-                    </thead>
-                    {% for i in invoices.paid %}
-                    <tr>
-                        <td>{{ i.name }}</td>
-                        <td>{{ i.description }}</td>
-                        <td>{{ i.date_added }}</td>
-                        <td>{{ i.date_deadline }}</td>
-                        <td>{{ i.amount_cents }}</td>
-                        <td>{{ i.payment__amount_cents }}</td>
-                    </tr>
-                    {% endfor %}
-                </table>
-                {% else %}
-                <h4>It looks like there are no paid invoices yet.</h4>
-                {% endif %}
-            </section>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Date Added</th>
+                <th>Date Due</th>
+                <th>Amount Total</th>
+                <th>Amount Paid</th>
+            </tr>
+            </thead>
+            {% for i in invoices.overpaid %}
+            <tr>
+                <td>{{ i.name }}</td>
+                <td>{{ i.description }}</td>
+                <td>{{ i.date_added }}</td>
+                <td>{{ i.date_deadline }}</td>
+                <td>{{ i.amount_cents }}</td>
+                <td>{{ i.payment__amount_cents }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </section>
+    {% endif %}
 
-            {% endif %}
-        </main>
+    <section class="invoices-paid">
+        <h2>Paid Invoices</h2>
+        {% if invoices.paid %}
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Date Added</th>
+                <th>Date Due</th>
+                <th>Amount Total</th>
+                <th>Amount Paid</th>
+            </tr>
+            </thead>
+            {% for i in invoices.paid %}
+            <tr>
+                <td>{{ i.name }}</td>
+                <td>{{ i.description }}</td>
+                <td>{{ i.date_added }}</td>
+                <td>{{ i.date_deadline }}</td>
+                <td>{{ i.amount_cents }}</td>
+                <td>{{ i.payment__amount_cents }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <h4>It looks like there are no paid invoices yet.</h4>
+        {% endif %}
+    </section>
 
-    </div>
+    {% endif %}
 </div>
-</body>
-</html>
+{% endblock content %}

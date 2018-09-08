@@ -1,22 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-    {% include "payments/head.html" %}
-    <title>Arapay</title>
-</head>
-<body>
+{% extends "payments/base.html" %}
 
-<div class="wrapper">
-    <div class="container">
+{% block title %}Arapay{% endblock %}
 
-        <nav class="main-nav">
-            <ul class="nav">
-                <li>Not Logged In</li>
-                <li><a href="/login/google-oauth2/?next=/p">Login</a></li>
-            </ul>
-        </nav>
-    </div>
-</div>
-
-</body>
-</html>
+{% block nav_items %}
+<li>Not Logged In</li>
+<li><a href="/login/google-oauth2/?next=/p">Login</a></li>
+{% endblock %}

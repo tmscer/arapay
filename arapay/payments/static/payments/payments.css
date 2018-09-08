@@ -14,3 +14,13 @@ nav.main-nav ul li {
 main.invoices section {
     margin-bottom: 2em;
 }
+
+tr.invoice-detail {
+    padding-bottom: 100px;
+    display: none;
+   -prefix-animation: slide 1s ease 2s forwards;
+}
+
+.grey-bg {
+    background-color: rgba(0,0,0,.05);
+}
