@@ -25,7 +25,6 @@ def index(request):
                 .filter(invoice_id=invoice['id'], user_id=request.user.id) \
                 .values().first()
             if payment is None:
-                # Unpaid
                 invoice['payment'] = {
                     'amount_cents': 0,
                     'user_id': request.user.id
