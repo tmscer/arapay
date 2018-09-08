@@ -15,6 +15,10 @@ main.invoices section {
     margin-bottom: 2em;
 }
 
+tr.invoice-master {
+    cursor: pointer;
+}
+
 tr.invoice-detail td {
     padding: 0;
 }
