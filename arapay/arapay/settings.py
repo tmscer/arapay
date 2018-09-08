@@ -30,6 +30,7 @@ ALLOWED_HOSTS = ['localhost', 'abydos', 'avava.gyarab.cz']
 
 INSTALLED_APPS = [
     'rest_framework',
+    'rest_framework.authtoken',
     'social_django',
     'payments.apps.PaymentsConfig',
     'corsheaders',
@@ -50,6 +51,19 @@ with open(_GOOGLE_SECRETS_FILE) as f:
     GOOGLE_OAUTH2_CLIENT_SECRETS = json.loads(''.join(f.readlines()))
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = GOOGLE_OAUTH2_CLIENT_SECRETS['web']['client_id']
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = GOOGLE_OAUTH2_CLIENT_SECRETS['web']['client_secret']
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAdminUser',
+    )
+}
 
 
 MIDDLEWARE = [
