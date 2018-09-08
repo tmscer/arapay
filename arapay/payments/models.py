@@ -1,3 +1,5 @@
+from datetime import datetime as dt
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.db import models
@@ -8,7 +10,7 @@ User = get_user_model()
 class Invoice(models.Model):
     name = models.fields.CharField('invoice name', max_length=32)
     description = models.fields.TextField('payment description', max_length=200)
-    date_added = models.fields.DateTimeField('date added')
+    date_added = models.fields.DateTimeField('date added', default=dt.now)
     date_deadline = models.fields.DateTimeField('date due')
     amount_cents = models.fields.BigIntegerField('amount in cents')
     groups = models.ManyToManyField(Group)
