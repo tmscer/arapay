@@ -21,6 +21,12 @@ tr.invoice-detail {
    -prefix-animation: slide 1s ease 2s forwards;
 }
 
+tr.invoice-detail div {
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-bottom: 0.5em;
+}
+
 .grey-bg {
     background-color: rgba(0,0,0,.05);
 }

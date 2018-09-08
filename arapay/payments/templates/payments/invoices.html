@@ -39,7 +39,7 @@
                 <td>{{ i.amount_cents }}</td>
                 <td>{{ i.payment__amount_cents }}</td>
             </tr>
-            <tr class="invoice-detail">
+            <tr class="invoice-detail{% cycle '' ' grey-bg' %}">
                 <td colspan="6">
                     <div>
                         Hello world!
@@ -57,7 +57,7 @@
     <section class="invoices-overpaid">
         <h2>Overpaid Invoices - Please request a refund.</h2>
 
-        <table class="table table-striped">
+        <table class="table invoice-table">
             <thead>
             <tr>
                 <th>Name</th>
@@ -69,13 +69,20 @@
             </tr>
             </thead>
             {% for i in invoices.overpaid %}
-            <tr>
+            <tr class="invoice-master{% cycle '' ' grey-bg' %}">
                 <td>{{ i.name }}</td>
                 <td>{{ i.description }}</td>
                 <td>{{ i.date_added }}</td>
                 <td>{{ i.date_deadline }}</td>
                 <td>{{ i.amount_cents }}</td>
                 <td>{{ i.payment__amount_cents }}</td>
+            </tr>
+            <tr class="invoice-detail{% cycle '' ' grey-bg' %}">
+                <td colspan="6">
+                    <div>
+                        Hello world!
+                    </div>
+                </td>
             </tr>
             {% endfor %}
         </table>
@@ -85,7 +92,7 @@
     <section class="invoices-paid">
         <h2>Paid Invoices</h2>
         {% if invoices.paid %}
-        <table class="table table-striped">
+        <table class="table invoice-table">
             <thead>
             <tr>
                 <th>Name</th>
@@ -97,13 +104,20 @@
             </tr>
             </thead>
             {% for i in invoices.paid %}
-            <tr>
+            <tr class="invoice-master{% cycle '' ' grey-bg' %}">
                 <td>{{ i.name }}</td>
                 <td>{{ i.description }}</td>
                 <td>{{ i.date_added }}</td>
                 <td>{{ i.date_deadline }}</td>
                 <td>{{ i.amount_cents }}</td>
                 <td>{{ i.payment__amount_cents }}</td>
+            </tr>
+            <tr class="invoice-detail{% cycle '' ' grey-bg' %}">
+                <td colspan="6">
+                    <div>
+                        Hello world!
+                    </div>
+                </td>
             </tr>
             {% endfor %}
         </table>
