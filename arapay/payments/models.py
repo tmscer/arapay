@@ -19,6 +19,9 @@ class Invoice(models.Model):
         return "Invoice(name={}, description={}, date_added={}, date_deadline={}, amount_cents={})" \
             .format(self.name, self.description, self.date_added, self.date_deadline, self.amount_cents)
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         verbose_name = 'invoice'
         verbose_name_plural = 'invoices'
