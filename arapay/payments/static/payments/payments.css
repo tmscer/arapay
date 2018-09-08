@@ -15,18 +15,42 @@ main.invoices section {
     margin-bottom: 2em;
 }
 
-tr.invoice-detail {
-    padding-bottom: 100px;
-    display: none;
-   -prefix-animation: slide 1s ease 2s forwards;
+tr.invoice-detail td {
+    padding: 0;
 }
 
-tr.invoice-detail div {
-    padding-left: 1em;
-    padding-right: 1em;
-    padding-bottom: 0.5em;
+tr.invoice-detail td div {
+    max-height: 0;
+    padding: 0 1em;
+    box-sizing: border-box;
+    overflow: hidden;
+    transition: max-height 0.3s, padding 0.3s;
+}
+
+tr.invoice-detail-active td div {
+    max-height: 200px;
+    padding: 1em;
+    padding-bottom: 1.5em;x
+    transition: max-height 0.6s, padding 0.6s;
 }
 
 .grey-bg {
     background-color: rgba(0,0,0,.05);
+}
+
+.caret-right {
+    margin-right: 5px;
+    margin-top: 0.45em;
+    border-bottom: 4px solid transparent;
+    border-top: 4px solid transparent;
+    border-left: 4px solid;
+    display: inline-block;
+    height: 0;
+    opacity: 0.9;
+    vertical-align: top;
+    width: 0;
+}
+
+.caret-right-down {
+    transform: rotate(90deg)
 }

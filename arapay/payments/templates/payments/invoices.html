@@ -23,7 +23,6 @@
             <thead>
             <tr>
                 <th>Name</th>
-                <th>Description</th>
                 <th>Date Added</th>
                 <th>Date Due</th>
                 <th>Amount Total</th>
@@ -32,17 +31,16 @@
             </thead>
             {% for i in invoices.unpaid %}
             <tr class="invoice-master{% cycle '' ' grey-bg' %}">
-                <td>{{ i.name }}</td>
-                <td>{{ i.description }}</td>
+                <td><b class="caret-right"></b>{{ i.name }}</td>
                 <td>{{ i.date_added }}</td>
                 <td>{{ i.date_deadline }}</td>
                 <td>{{ i.amount_cents }}</td>
                 <td>{{ i.payment__amount_cents }}</td>
             </tr>
             <tr class="invoice-detail{% cycle '' ' grey-bg' %}">
-                <td colspan="6">
+                <td colspan="5">
                     <div>
-                        Hello world!
+                        Detail
                     </div>
                 </td>
             </tr>
@@ -61,7 +59,6 @@
             <thead>
             <tr>
                 <th>Name</th>
-                <th>Description</th>
                 <th>Date Added</th>
                 <th>Date Due</th>
                 <th>Amount Total</th>
@@ -70,17 +67,16 @@
             </thead>
             {% for i in invoices.overpaid %}
             <tr class="invoice-master{% cycle '' ' grey-bg' %}">
-                <td>{{ i.name }}</td>
-                <td>{{ i.description }}</td>
+                <td><b class="caret-right"></b>{{ i.name }}</td>
                 <td>{{ i.date_added }}</td>
                 <td>{{ i.date_deadline }}</td>
                 <td>{{ i.amount_cents }}</td>
                 <td>{{ i.payment__amount_cents }}</td>
             </tr>
             <tr class="invoice-detail{% cycle '' ' grey-bg' %}">
-                <td colspan="6">
+                <td colspan="5">
                     <div>
-                        Hello world!
+                        Detail
                     </div>
                 </td>
             </tr>
@@ -96,7 +92,6 @@
             <thead>
             <tr>
                 <th>Name</th>
-                <th>Description</th>
                 <th>Date Added</th>
                 <th>Date Due</th>
                 <th>Amount Total</th>
@@ -105,17 +100,16 @@
             </thead>
             {% for i in invoices.paid %}
             <tr class="invoice-master{% cycle '' ' grey-bg' %}">
-                <td>{{ i.name }}</td>
-                <td>{{ i.description }}</td>
+                <td><b class="caret-right"></b>{{ i.name }}</td>
                 <td>{{ i.date_added }}</td>
                 <td>{{ i.date_deadline }}</td>
                 <td>{{ i.amount_cents }}</td>
                 <td>{{ i.payment__amount_cents }}</td>
             </tr>
             <tr class="invoice-detail{% cycle '' ' grey-bg' %}">
-                <td colspan="6">
+                <td colspan="5">
                     <div>
-                        Hello world!
+                        Detail
                     </div>
                 </td>
             </tr>
