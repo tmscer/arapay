@@ -49,8 +49,10 @@ tr.invoice-detail-active td div {
     opacity: 0.9;
     vertical-align: top;
     width: 0;
+    transition: transform 0.2s;
 }
 
 .caret-right-down {
-    transform: rotate(90deg)
+    transform: rotate(90deg);
+    transition: transform 0.2s;
 }
