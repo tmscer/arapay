@@ -1,7 +1,3 @@
-.container {
-    border-bottom: 3px solid #dddddd;
-}
-
 nav.main-nav {
     border-bottom: 2px solid #dddddd;
     margin-bottom: 2em;
@@ -23,15 +19,15 @@ section.invoices article {
     margin-bottom: 2em;
 }
 
-tr.invoice-master {
+tr.row-master {
     cursor: pointer;
 }
 
-tr.invoice-detail > td {
+tr.row-detail > td {
     padding: 0;
 }
 
-tr.invoice-detail > td > div {
+tr.row-detail > td > div {
     max-height: 0;
     padding: 0 1em;
     box-sizing: border-box;
@@ -39,7 +35,7 @@ tr.invoice-detail > td > div {
     transition: max-height 0.3s, padding 0.3s;
 }
 
-tr.invoice-detail-active > td > div {
+tr.row-detail-active > td > div {
     max-height: 200px;
     padding: 1em;
     padding-bottom: 1.5em;x
@@ -71,10 +67,6 @@ tr.invoice-detail-active > td > div {
     padding: 0.4rem;
 }
 
-.invoice-payment-command tr > td:nth-child(2) {
-    text-align: right;
-}
-
 .caret-right {
     margin-right: 5px;
     margin-top: 0.45em;
@@ -97,6 +89,9 @@ tr.invoice-detail-active > td > div {
 .footer {
     margin-top: 10em;
     float: right;
+    border-top: 2px solid #dddddd;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .solo-item {
@@ -114,6 +109,22 @@ tr.invoice-detail-active > td > div {
     border-color: #007bff;
 }
 
+.red-bg, .payment-status-unpaid {
+    color: #ffffff;
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.green-bg, .payment-status-paid {
+    color: #ffffff;
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
 .grey-bg {
     background-color: rgba(0, 0, 0, 0.05);
+}
+
+.payment-status {
+    text-transform: uppercase;
 }

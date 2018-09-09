@@ -1,0 +1,68 @@
+{% extends "payments/base.html" %}
+{% load static %}
+{% load mathfilters %}
+
+{% block head %}
+<script src="{% static 'payments/invoices.js' %}"></script>
+{% endblock head %}
+
+{% block title %}Your Invoices - Arapay{% endblock title %}
+
+{% block content %}
+
+<section class="groups">
+    <h3>You belong in these groups:</h3>
+    {% for group in groups %}
+    <span class="solo-item blue-bg">{{ group.name }}</span>
+    {% endfor %}
+</section>
+
+{% if invoices_user %}
+
+{% for invoice, users in invoices_user.items %}
+
+<div class="invoice-users">
+
+    <h2>{{ invoice.1 }}</h2>
+
+    <table class="invoice-table table">
+        <thead>
+        <tr>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Amount</th>
+            <th>Amount Paid</th>
+            <th>Variable Symbol</th>
+        </tr>
+        </thead>
+        {% for user, payment in users.items %}
+        <tr class="{% cycle '' 'grey-bg' %}">
+            <td>{{ user.1 }}</td>
+            <td><span class="solo-item payment-status payment-status-{{payment.status}}">{{ payment.status }}</span>
+            </td>
+            <td class="text-right">{{ invoice.2|div:100 }} CZK</td>
+            <td class="text-right">{{ payment.amount_cents|div:100 }} CZK</td>
+            <td class="text-right">
+                {% if payment.var_symbol %}
+                {{ payment.var_symbol }}
+                {% elif payment.status == 'unpaid' %}
+                <button class="btn btn-primary"
+                        onclick="generate_var_symbol('{% url 'payments:generate_var_symbol' user.0 invoice.0 %}', {{ user.0 }}, {{ invoice.0 }}, this)">
+                    Generate
+                </button>
+                {% else %}
+                <button class="disabled btn btn-primary">VS N/A</button>
+                {% endif%}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+
+</div>
+
+{% endfor %}
+
+{% endif %}
+
+{% endblock content %}
