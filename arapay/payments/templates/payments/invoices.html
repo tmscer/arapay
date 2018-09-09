@@ -56,7 +56,7 @@
                         <table class="invoice-payment-command table table-striped">
                             <tr>
                                 <td>Acc. #</td>
-                                <td>23456789/0300</td>
+                                <td>{{ account_number }}</td>
                             </tr>
                             <tr>
                                 <td>Var Symbol</td>
@@ -108,9 +108,27 @@
             <tr class="invoice-detail{% cycle '' ' grey-bg' %}">
                 <td colspan="5">
                     <div>
+                        <span class="invoice-description">
                         {% autoescape off %}
                         {{ i.description }}
                         {% endautoescape %}
+                        </span>
+                        <table class="invoice-payment-command table table-striped">
+                            <tr>
+                                <td>Acc. #</td>
+                                <td>{{ account_number }}</td>
+                            </tr>
+                            <tr>
+                                <td>Var Symbol</td>
+                                <td>
+                                    {% if i.payment.var_symbol %}
+                                    {{ i.payment.var_symbol }}
+                                    {% else %}
+                                    VS N/A
+                                    {% endif%}
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                 </td>
             </tr>
@@ -143,9 +161,27 @@
             <tr class="invoice-detail{% cycle '' ' grey-bg' %}">
                 <td colspan="5">
                     <div>
+                        <span class="invoice-description">
                         {% autoescape off %}
                         {{ i.description }}
-                        {% endautoescape %}K
+                        {% endautoescape %}
+                        </span>
+                        <table class="invoice-payment-command table table-striped">
+                            <tr>
+                                <td>Acc. #</td>
+                                <td>{{ account_number }}</td>
+                            </tr>
+                            <tr>
+                                <td>Var Symbol</td>
+                                <td>
+                                    {% if i.payment.var_symbol %}
+                                    {{ i.payment.var_symbol }}
+                                    {% else %}
+                                    VS N/A
+                                    {% endif%}
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                 </td>
             </tr>
