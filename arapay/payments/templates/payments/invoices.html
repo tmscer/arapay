@@ -28,6 +28,7 @@
     <section class="invoices-unpaid">
         <h2>Unpaid Invoices</h2>
         {% if invoices.unpaid %}
+        {% include 'payments/invoices-actions.html' %}
         <table class="table invoice-table">
             <thead>
             <tr>
@@ -90,7 +91,7 @@
     {% if invoices.overpaid %}
     <section class="invoices-overpaid">
         <h2>Overpaid Invoices - Please request a refund.</h2>
-
+        {% include 'payments/invoices-actions.html' %}
         <table class="table invoice-table">
             <thead>
             <tr>
@@ -144,6 +145,7 @@
     <section class="invoices-paid">
         <h2>Paid Invoices</h2>
         {% if invoices.paid %}
+        {% include 'payments/invoices-actions.html' %}
         <table class="table invoice-table">
             <thead>
             <tr>
