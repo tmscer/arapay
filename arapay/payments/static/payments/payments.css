@@ -1,7 +1,3 @@
-.container {
-    border-bottom: 3px solid #dddddd;
-}
-
 nav.main-nav {
     border-bottom: 2px solid #dddddd;
     margin-bottom: 2em;
@@ -71,10 +67,6 @@ tr.invoice-detail-active > td > div {
     padding: 0.4rem;
 }
 
-.invoice-payment-command tr > td:nth-child(2) {
-    text-align: right;
-}
-
 .caret-right {
     margin-right: 5px;
     margin-top: 0.45em;
@@ -97,6 +89,9 @@ tr.invoice-detail-active > td > div {
 .footer {
     margin-top: 10em;
     float: right;
+    border-top: 2px solid #dddddd;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .solo-item {
