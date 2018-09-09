@@ -10,8 +10,8 @@ User = get_user_model()
 class Invoice(models.Model):
     name = models.fields.CharField('invoice name', max_length=32)
     description = models.fields.TextField('payment description', max_length=200, blank=True)
-    date_added = models.fields.DateTimeField('date added', default=dt.now)
-    date_deadline = models.fields.DateTimeField('date due')
+    date_added = models.fields.DateField('date added', default=dt.now)
+    date_deadline = models.fields.DateField('date due')
     amount_cents = models.fields.BigIntegerField('amount in cents')
     groups = models.ManyToManyField(Group)
 
@@ -31,10 +31,15 @@ class Payment(models.Model):
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     amount_cents = models.fields.BigIntegerField('amount in cents')
+    date_paid = models.fields.DateField('date paid', default=dt.now)
 
     def __repr__(self):
         return "Payment(invoice={}, user={}, amount_cents={})" \
             .format(self.invoice, self.user, self.amount_cents)
+
+    def __str__(self):
+        return "{} {}" \
+            .format(self.invoice, self.user)
 
     class Meta:
         verbose_name = 'payment'
