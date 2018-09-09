@@ -29,6 +29,7 @@ ALLOWED_HOSTS = ['localhost', 'abydos', 'avava.gyarab.cz']
 # Application definition
 
 INSTALLED_APPS = [
+    'mathfilters',
     'rest_framework',
     'rest_framework.authtoken',
     'social_django',

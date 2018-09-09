@@ -1,3 +1,7 @@
+.container {
+    border-bottom: 3px solid #dddddd;
+}
+
 nav.main-nav {
     border-bottom: 2px solid #dddddd;
     margin-bottom: 2em;
@@ -15,7 +19,7 @@ section.groups {
     margin-bottom: 2em;
 }
 
-main.invoices section {
+section.invoices article {
     margin-bottom: 2em;
 }
 
@@ -40,6 +44,15 @@ tr.invoice-detail-active > td > div {
     padding: 1em;
     padding-bottom: 1.5em;x
     transition: max-height 0.6s, padding 0.6s;
+}
+
+.invoices section > h2 {
+    display: inline-block;
+}
+
+.invoice-actions {
+    display: inline-block;
+    float: right;
 }
 
 .invoice-description {

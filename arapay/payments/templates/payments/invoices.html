@@ -1,5 +1,6 @@
 {% extends "payments/base.html" %}
 {% load static %}
+{% load mathfilters %}
 
 {% block head %}
 <script src="{% static 'payments/invoices.js' %}"></script>
@@ -21,12 +22,13 @@
     {% endfor %}
 </section>
 
-<div class="invoices">
+<section class="invoices">
     {% if invoices %}
 
-    <section class="invoices-unpaid">
+    <article class="invoices-unpaid">
         <h2>Unpaid Invoices</h2>
         {% if invoices.unpaid %}
+        {% include 'payments/invoices-actions.html' %}
         <table class="table invoice-table">
             <thead>
             <tr>
@@ -42,8 +44,8 @@
                 <td><b class="caret-right"></b>{{ i.name }}</td>
                 <td>{{ i.date_added|date:"D d-m-Y" }}</td>
                 <td>{{ i.date_deadline|date:"D d-m-Y" }}</td>
-                <td>{{ i.amount_cents }}</td>
-                <td>{{ i.payment.amount_cents }}</td>
+                <td>{{ i.amount_cents|div:100 }} {{ currency }}</td>
+                <td>{{ i.payment.amount_cents|div:100 }} {{ currency }}</td>
             </tr>
             <tr class="invoice-detail{% cycle '' ' grey-bg' %}">
                 <td colspan="5">
@@ -84,12 +86,12 @@
         {% else %}
         <h4>Congratulations! There are no unpaid invoices!</h4>
         {% endif %}
-    </section>
+    </article>
 
     {% if invoices.overpaid %}
-    <section class="invoices-overpaid">
+    <article class="invoices-overpaid">
         <h2>Overpaid Invoices - Please request a refund.</h2>
-
+        {% include 'payments/invoices-actions.html' %}
         <table class="table invoice-table">
             <thead>
             <tr>
@@ -105,8 +107,8 @@
                 <td><b class="caret-right"></b>{{ i.name }}</td>
                 <td>{{ i.date_added|date:"D d-m-Y" }}</td>
                 <td>{{ i.date_deadline|date:"D d-m-Y" }}</td>
-                <td>{{ i.amount_cents }}</td>
-                <td>{{ i.payment.amount_cents }}</td>
+                <td>{{ i.amount_cents|div:100 }} {{ currency }}</td>
+                <td>{{ i.payment.amount_cents|div:100 }} {{ currency }}</td>
             </tr>
             <tr class="invoice-detail{% cycle '' ' grey-bg' %}">
                 <td colspan="5">
@@ -137,12 +139,13 @@
             </tr>
             {% endfor %}
         </table>
-    </section>
+    </article>
     {% endif %}
 
-    <section class="invoices-paid">
+    <article class="invoices-paid">
         <h2>Paid Invoices</h2>
         {% if invoices.paid %}
+        {% include 'payments/invoices-actions.html' %}
         <table class="table invoice-table">
             <thead>
             <tr>
@@ -158,8 +161,8 @@
                 <td><b class="caret-right"></b>{{ i.name }}</td>
                 <td>{{ i.date_added|date:"D d-m-Y" }}</td>
                 <td>{{ i.date_deadline|date:"D d-m-Y" }}</td>
-                <td>{{ i.amount_cents }}</td>
-                <td>{{ i.payment.amount_cents }}</td>
+                <td>{{ i.amount_cents|div:100 }} {{ currency }}</td>
+                <td>{{ i.payment.amount_cents|div:100 }} {{ currency }}</td>
             </tr>
             <tr class="invoice-detail{% cycle '' ' grey-bg' %}">
                 <td colspan="5">
@@ -191,10 +194,10 @@
             {% endfor %}
         </table>
         {% else %}
-        <h4>It looks like you have paid invoices yet.</h4>
+        <h4>It looks like you have no paid invoices yet.</h4>
         {% endif %}
-    </section>
+    </article>
 
     {% endif %}
-</div>
+</section>
 {% endblock content %}

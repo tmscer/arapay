@@ -1,7 +1,6 @@
 import random
 
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render
 from rest_framework import viewsets
 
@@ -33,7 +32,10 @@ def index(request):
                 'amount_cents': 0,
                 'user_id': request.user.id
             }
-            invoices_unpaid.append(invoice)
+            if invoice['amount_cents'] < 0:
+                invoices_overpaid.append(invoice)
+            else:
+                invoices_unpaid.append(invoice)
             continue
         invoice['payment'] = payment
         if invoice['amount_cents'] > payment['amount_cents']:
@@ -50,12 +52,14 @@ def index(request):
                 'overpaid': invoices_overpaid,
             },
             'groups': list(groups),
-            'account_number': '285621010/0300'}
+            'account_number': '285621010/0300',
+            'currency': 'CZK'}
     return render(request, 'payments/invoices.html', data)
 
 
-@login_required
 def generate_var_symbol(request, invoice_id):
+    if not request.user.is_authenticated:
+        return HttpResponseForbidden()
     groups = request.user.groups.all().values()
     group_ids = [g['id'] for g in groups]
     invoice_result = Invoice.objects.filter(id=invoice_id, groups__in=group_ids)
