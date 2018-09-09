@@ -2,6 +2,7 @@ from datetime import datetime as dt
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 User = get_user_model()
@@ -32,6 +33,8 @@ class Payment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     amount_cents = models.fields.BigIntegerField('amount in cents')
     date_paid = models.fields.DateField('date paid', default=dt.now)
+    var_symbol = models.fields.PositiveIntegerField(default=0,
+                                                    validators=[MaxValueValidator(9999999999)])
 
     def __repr__(self):
         return "Payment(invoice={}, user={}, amount_cents={})" \
