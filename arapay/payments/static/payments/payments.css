@@ -14,7 +14,7 @@ nav.main-nav ul li {
 .solo-item {
     text-align: center;
     padding: 7px 12px;
-    border-radius: 2px;
+    border-radius: 3px;
     color: #000000;
     background-color: #dddddd;
     border-color: #999999;
@@ -78,4 +78,9 @@ tr.invoice-detail-active td div {
 .caret-right-down {
     transform: rotate(90deg);
     transition: transform 0.2s;
+}
+
+.footer {
+    margin-top: 10em;
+    float: right;
 }

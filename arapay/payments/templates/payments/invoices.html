@@ -40,15 +40,17 @@
             {% for i in invoices.unpaid %}
             <tr class="invoice-master{% cycle '' ' grey-bg' %}">
                 <td><b class="caret-right"></b>{{ i.name }}</td>
-                <td>{{ i.date_added }}</td>
-                <td>{{ i.date_deadline }}</td>
+                <td>{{ i.date_added|date:"D d-m-Y" }}</td>
+                <td>{{ i.date_deadline|date:"D d-m-Y" }}</td>
                 <td>{{ i.amount_cents }}</td>
                 <td>{{ i.payment.amount_cents }}</td>
             </tr>
             <tr class="invoice-detail{% cycle '' ' grey-bg' %}">
                 <td colspan="5">
                     <div>
+                        {% autoescape off %}
                         {{ i.description }}
+                        {% endautoescape %}
                     </div>
                 </td>
             </tr>
@@ -76,15 +78,17 @@
             {% for i in invoices.overpaid %}
             <tr class="invoice-master{% cycle '' ' grey-bg' %}">
                 <td><b class="caret-right"></b>{{ i.name }}</td>
-                <td>{{ i.date_added }}</td>
-                <td>{{ i.date_deadline }}</td>
+                <td>{{ i.date_added|date:"D d-m-Y" }}</td>
+                <td>{{ i.date_deadline|date:"D d-m-Y" }}</td>
                 <td>{{ i.amount_cents }}</td>
                 <td>{{ i.payment.amount_cents }}</td>
             </tr>
             <tr class="invoice-detail{% cycle '' ' grey-bg' %}">
                 <td colspan="5">
                     <div>
+                        {% autoescape off %}
                         {{ i.description }}
+                        {% endautoescape %}
                     </div>
                 </td>
             </tr>
@@ -109,15 +113,17 @@
             {% for i in invoices.paid %}
             <tr class="invoice-master{% cycle '' ' grey-bg' %}">
                 <td><b class="caret-right"></b>{{ i.name }}</td>
-                <td>{{ i.date_added }}</td>
-                <td>{{ i.date_deadline }}</td>
+                <td>{{ i.date_added|date:"D d-m-Y" }}</td>
+                <td>{{ i.date_deadline|date:"D d-m-Y" }}</td>
                 <td>{{ i.amount_cents }}</td>
                 <td>{{ i.payment.amount_cents }}</td>
             </tr>
             <tr class="invoice-detail{% cycle '' ' grey-bg' %}">
                 <td colspan="5">
                     <div>
+                        {% autoescape off %}
                         {{ i.description }}
+                        {% endautoescape %}K
                     </div>
                 </td>
             </tr>
