@@ -19,10 +19,10 @@ $(document).ready(function() {
     });
 });
 
-function generate_var_symbol(url, id) {
+function generate_var_symbol(url, user_id, invoice_id, elem) {
     $.ajax({url: url, dataType: "json", success: function(result) {
         if ('var_symbol' in result) {
-            $(".var-symbol-" + id).first().text(result['var_symbol']);
+            $(elem).parent().text(result['var_symbol']);
         }
     }});
 }

@@ -17,8 +17,13 @@
     {% endfor %}
 </section>
 
+{% if user_invoices %}
+
+{% for user, invoices in user_invoices.items %}
+
+<h2>{{ user.1 }}</h2>
+
 <section class="invoices">
-    {% if invoices %}
 
     <article class="invoices-unpaid">
         <h2>Unpaid Invoices</h2>
@@ -57,12 +62,12 @@
                             </tr>
                             <tr>
                                 <td>Var Symbol</td>
-                                <td class="text-right">
+                                <td class="text-right var-symbol-{{ i.id }}">
                                     {% if i.payment.var_symbol %}
                                     {{ i.payment.var_symbol }}
                                     {% else %}
                                     <button class="btn btn-primary"
-                                            onclick="generate_var_symbol('{% url 'payments:generate_var_symbol' user.id i.id %}', {{ user.0 }}, {{ i.id }}, this)">
+                                            onclick="generate_var_symbol('{% url 'payments:generate_var_symbol' user_id=user.0 invoice_id=i.id %}', {{ user.0 }}, {{ i.id }}, this)">
                                         Generate
                                     </button>
                                     {% endif%}
@@ -193,6 +198,8 @@
         {% endif %}
     </article>
 
-    {% endif %}
+
 </section>
+{% endfor %}
+{% endif %}
 {% endblock content %}

@@ -1,7 +1,7 @@
 from payments.models import Invoice, Payment
 
 
-def invoices_paid_unpaid_overpaid(request, user):
+def invoices_paid_unpaid_overpaid(user):
     groups = user.groups.all().values()
     group_ids = [g['id'] for g in groups]
     invoices_paid = []
@@ -15,12 +15,12 @@ def invoices_paid_unpaid_overpaid(request, user):
 
     for invoice in invoices_result:
         payment = Payment.objects \
-            .filter(invoice_id=invoice['id'], user_id=request.user.id) \
+            .filter(invoice_id=invoice['id'], user_id=user.id) \
             .values().first()
         if payment is None:
             invoice['payment'] = {
                 'amount_cents': 0,
-                'user_id': request.user.id
+                'user_id': user.id
             }
             if invoice['amount_cents'] < 0:
                 invoices_overpaid.append(invoice)

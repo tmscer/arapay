@@ -1,5 +1,6 @@
 import random
 
+from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render
 from rest_framework import viewsets
@@ -14,7 +15,7 @@ def index(request):
         return render(request, 'payments/base.html')
     groups = request.user.groups.all().values()
 
-    invoices_paid, invoices_unpaid, invoices_overpaid = helpers.invoices_paid_unpaid_overpaid(request, request.user)
+    invoices_paid, invoices_unpaid, invoices_overpaid = helpers.invoices_paid_unpaid_overpaid(request.user)
 
     data = {'user': request.user,
             'invoices': {
@@ -28,10 +29,34 @@ def index(request):
     return render(request, 'payments/invoices.html', data)
 
 
-def generate_var_symbol(request, invoice_id):
-    if not request.user.is_authenticated:
+def by_user(request):
+    if not request.user.is_superuser:
         return HttpResponseForbidden()
     groups = request.user.groups.all().values()
+    users = User.objects.all()
+
+    user_invoices = {}
+    for user in users.values():
+        user_key = (user['id'], user['email'])
+        user_invoices[user_key] = {}
+        invoices_paid, invoices_unpaid, invoices_overpaid = helpers.invoices_paid_unpaid_overpaid(users.get(pk=user['id']))
+        user_invoices[user_key]['paid'] = invoices_paid
+        user_invoices[user_key]['unpaid'] = invoices_unpaid
+        user_invoices[user_key]['overpaid'] = invoices_overpaid
+
+    data = {'user': request.user,
+            'user_invoices': user_invoices,
+            'groups': list(groups),
+            'account_number': '285621010/0300',
+            'currency': 'CZK'}
+    return render(request, 'payments/invoices-all.html', data)
+
+
+def generate_var_symbol(request, user_id, invoice_id):
+    print(user_id)
+    if not request.user.is_authenticated or user_id != request.user.id and not request.user.is_superuser:
+        return HttpResponseForbidden()
+    groups = User.objects.filter(pk=user_id).get().groups.all().values()
     group_ids = [g['id'] for g in groups]
     invoice_result = Invoice.objects.filter(id=invoice_id, groups__in=group_ids)
     if len(invoice_result) != 0:
@@ -39,7 +64,7 @@ def generate_var_symbol(request, invoice_id):
     else:
         return HttpResponse('{"error":"invoice.na"}')
 
-    payment_query = Payment.objects.filter(invoice_id=invoice_id, user_id=request.user.id)
+    payment_query = Payment.objects.filter(invoice_id=invoice_id, user_id=user_id)
     if len(payment_query) == 0:
         payment = None
     else:
@@ -54,7 +79,7 @@ def generate_var_symbol(request, invoice_id):
     if payment is None:
         # Create it
         payment = Payment.objects.create(invoice_id=invoice_id,
-                                         user_id=request.user.id,
+                                         user_id=user_id,
                                          amount_cents=0,
                                          var_symbol=gen_var_symbol())
     elif payment.amount_cents == invoice.amount_cents:
