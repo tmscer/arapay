@@ -1,5 +1,6 @@
 {% extends "payments/base.html" %}
 {% load static %}
+{% load mathfilters %}
 
 {% block head %}
 <script src="{% static 'payments/invoices.js' %}"></script>
@@ -42,8 +43,8 @@
                 <td><b class="caret-right"></b>{{ i.name }}</td>
                 <td>{{ i.date_added|date:"D d-m-Y" }}</td>
                 <td>{{ i.date_deadline|date:"D d-m-Y" }}</td>
-                <td>{{ i.amount_cents }}</td>
-                <td>{{ i.payment.amount_cents }}</td>
+                <td>{{ i.amount_cents|div:100 }} {{ currency }}</td>
+                <td>{{ i.payment.amount_cents|div:100 }} {{ currency }}</td>
             </tr>
             <tr class="invoice-detail{% cycle '' ' grey-bg' %}">
                 <td colspan="5">
@@ -105,8 +106,8 @@
                 <td><b class="caret-right"></b>{{ i.name }}</td>
                 <td>{{ i.date_added|date:"D d-m-Y" }}</td>
                 <td>{{ i.date_deadline|date:"D d-m-Y" }}</td>
-                <td>{{ i.amount_cents }}</td>
-                <td>{{ i.payment.amount_cents }}</td>
+                <td>{{ i.amount_cents|div:100 }} {{ currency }}</td>
+                <td>{{ i.payment.amount_cents|div:100 }} {{ currency }}</td>
             </tr>
             <tr class="invoice-detail{% cycle '' ' grey-bg' %}">
                 <td colspan="5">
@@ -158,8 +159,8 @@
                 <td><b class="caret-right"></b>{{ i.name }}</td>
                 <td>{{ i.date_added|date:"D d-m-Y" }}</td>
                 <td>{{ i.date_deadline|date:"D d-m-Y" }}</td>
-                <td>{{ i.amount_cents }}</td>
-                <td>{{ i.payment.amount_cents }}</td>
+                <td>{{ i.amount_cents|div:100 }} {{ currency }}</td>
+                <td>{{ i.payment.amount_cents|div:100 }} {{ currency }}</td>
             </tr>
             <tr class="invoice-detail{% cycle '' ' grey-bg' %}">
                 <td colspan="5">
