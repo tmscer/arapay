@@ -1,3 +1,7 @@
+.container {
+    border-bottom: 3px solid #dddddd;
+}
+
 nav.main-nav {
     border-bottom: 2px solid #dddddd;
     margin-bottom: 2em;
@@ -15,7 +19,7 @@ section.groups {
     margin-bottom: 2em;
 }
 
-main.invoices section {
+section.invoices article {
     margin-bottom: 2em;
 }
 

@@ -32,7 +32,10 @@ def index(request):
                 'amount_cents': 0,
                 'user_id': request.user.id
             }
-            invoices_unpaid.append(invoice)
+            if invoice['amount_cents'] < 0:
+                invoices_overpaid.append(invoice)
+            else:
+                invoices_unpaid.append(invoice)
             continue
         invoice['payment'] = payment
         if invoice['amount_cents'] > payment['amount_cents']:

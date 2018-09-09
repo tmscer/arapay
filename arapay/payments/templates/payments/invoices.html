@@ -22,10 +22,10 @@
     {% endfor %}
 </section>
 
-<div class="invoices">
+<section class="invoices">
     {% if invoices %}
 
-    <section class="invoices-unpaid">
+    <article class="invoices-unpaid">
         <h2>Unpaid Invoices</h2>
         {% if invoices.unpaid %}
         {% include 'payments/invoices-actions.html' %}
@@ -86,10 +86,10 @@
         {% else %}
         <h4>Congratulations! There are no unpaid invoices!</h4>
         {% endif %}
-    </section>
+    </article>
 
     {% if invoices.overpaid %}
-    <section class="invoices-overpaid">
+    <article class="invoices-overpaid">
         <h2>Overpaid Invoices - Please request a refund.</h2>
         {% include 'payments/invoices-actions.html' %}
         <table class="table invoice-table">
@@ -139,10 +139,10 @@
             </tr>
             {% endfor %}
         </table>
-    </section>
+    </article>
     {% endif %}
 
-    <section class="invoices-paid">
+    <article class="invoices-paid">
         <h2>Paid Invoices</h2>
         {% if invoices.paid %}
         {% include 'payments/invoices-actions.html' %}
@@ -196,8 +196,8 @@
         {% else %}
         <h4>It looks like you have no paid invoices yet.</h4>
         {% endif %}
-    </section>
+    </article>
 
     {% endif %}
-</div>
+</section>
 {% endblock content %}
