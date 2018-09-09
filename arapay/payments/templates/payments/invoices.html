@@ -60,11 +60,14 @@
                             </tr>
                             <tr>
                                 <td>Var Symbol</td>
-                                <td>
+                                <td class="var-symbol-{{ i.id }}">
                                     {% if i.payment.var_symbol %}
                                     {{ i.payment.var_symbol }}
                                     {% else %}
-                                    <a href="{% url 'payments:generate_var_symbol' i.id %}">Generate</a>
+                                    <button class="btn btn-primary"
+                                            onclick="generate_var_symbol('{% url 'payments:generate_var_symbol' i.id %}', {{ i.id }})">
+                                        Generate
+                                    </button>
                                     {% endif%}
                                 </td>
                             </tr>

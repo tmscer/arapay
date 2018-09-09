@@ -4,3 +4,11 @@ $(document).ready(function() {
         $(this).next().toggleClass("invoice-detail-active");
     });
 });
+
+function generate_var_symbol(url, id) {
+    $.ajax({url: url, dataType: "json", success: function(result) {
+        if ('var_symbol' in result) {
+            $(".var-symbol-" + id).first().text(result['var_symbol']);
+        }
+    }});
+}
