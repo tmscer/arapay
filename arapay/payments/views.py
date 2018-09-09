@@ -39,7 +39,8 @@ def by_user(request):
     for user in users.values():
         user_key = (user['id'], user['email'])
         user_invoices[user_key] = {}
-        invoices_paid, invoices_unpaid, invoices_overpaid = helpers.invoices_paid_unpaid_overpaid(users.get(pk=user['id']))
+        invoices_paid, invoices_unpaid, invoices_overpaid = helpers.invoices_paid_unpaid_overpaid(
+            users.get(pk=user['id']))
         user_invoices[user_key]['paid'] = invoices_paid
         user_invoices[user_key]['unpaid'] = invoices_unpaid
         user_invoices[user_key]['overpaid'] = invoices_overpaid
@@ -53,7 +54,47 @@ def by_user(request):
 
 
 def by_invoice(request):
-    pass
+    if not request.user.is_superuser:
+        return HttpResponseForbidden()
+    groups = request.user.groups.all().values()
+
+    invoices = Invoice.objects.all().values('id', 'name', 'amount_cents')
+    invoice_users = {}
+
+    for invoice in invoices:
+        igroups = Invoice.objects.filter(pk=invoice['id']).get().groups.all().values('id')
+        users = User.objects.filter(groups__in=igroups).values('id', 'email')
+        invoice_key = (invoice['id'], invoice['name'], invoice['amount_cents'])
+        current_users = {}
+        for user in users:
+            user_key = (user['id'], user['email'])
+            payment = Payment.objects \
+                .filter(invoice_id=invoice['id'], user_id=user['id']) \
+                .values().first()
+            if payment is None:
+                payment = {
+                    'amount_cents': 0,
+                }
+                if invoice['amount_cents'] < 0:
+                    payment['status'] = 'overpaid'
+                else:
+                    payment['status'] = 'unpaid'
+            elif invoice['amount_cents'] > payment['amount_cents']:
+                payment['status'] = 'unpaid'
+            elif invoice['amount_cents'] == payment['amount_cents']:
+                payment['status'] = 'paid'
+            else:
+                payment['status'] = 'overpaid'
+            current_users[user_key] = payment
+        invoice_users[invoice_key] = current_users
+
+    print(invoice_users)
+    data = {'user': request.user,
+            'invoices_user': invoice_users,
+            'groups': list(groups),
+            'account_number': '285621010/0300',
+            'currency': 'CZK'}
+    return render(request, 'payments/invoices-by-invoice.html', data)
 
 
 def generate_var_symbol(request, user_id, invoice_id):
