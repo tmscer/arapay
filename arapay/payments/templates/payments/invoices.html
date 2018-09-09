@@ -8,7 +8,7 @@
 {% block title %}Your Invoices - Arapay{% endblock title %}
 
 {% block nav_items %}
-<li>Logged in as <b>{{ username }}</b></li>
+<li>Logged in as <b>{{ user.email }}</b></li>
 <li><a href="/accounts/logout/?next=/">Logout</a></li>
 {% endblock nav_items %}
 
@@ -48,9 +48,31 @@
             <tr class="invoice-detail{% cycle '' ' grey-bg' %}">
                 <td colspan="5">
                     <div>
+                        <span class="invoice-description">
                         {% autoescape off %}
                         {{ i.description }}
                         {% endautoescape %}
+                        </span>
+                        <table class="invoice-payment-command table table-striped">
+                            <tr>
+                                <td>Acc. #</td>
+                                <td>23456789/0300</td>
+                            </tr>
+                            <tr>
+                                <td>Var Symbol</td>
+                                <td>
+                                    {% if i.payment.var_symbol %}
+                                    {{ i.payment.var_symbol }}
+                                    {% else %}
+                                    <a href="{% url 'payments:generate_var_symbol' i.id %}">Generate</a>
+                                    {% endif%}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Message</td>
+                                <td>arapay-{{ user.username }}-{{ i.name }}</td>
+                            </tr>
+                        </table>
                     </div>
                 </td>
             </tr>

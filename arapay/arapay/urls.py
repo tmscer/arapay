@@ -18,7 +18,7 @@ from django.urls import include, path
 from django.views.generic import RedirectView
 
 urlpatterns = [
-    path('p/', include('payments.urls')),
+    path('p/', include('payments.urls', namespace="payments")),
     path('', RedirectView.as_view(url='p/', permanent=False), name='index'),
 
     # Google+ login

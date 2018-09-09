@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from django.shortcuts import render
 from rest_framework import viewsets
 
@@ -39,7 +41,7 @@ def index(request):
         else:
             invoices_overpaid.append(invoice)
 
-    data = {'username': request.user.email,
+    data = {'user': request.user,
             'invoices': {
                 'paid': invoices_paid,
                 'unpaid': invoices_unpaid,
@@ -47,6 +49,12 @@ def index(request):
             },
             'groups': list(groups)}
     return render(request, 'payments/invoices.html', data)
+
+
+@login_required
+def generate_var_symbol(request, invoice_id):
+    invoice = Invoice.objects.filter(id=invoice_id)
+    return HttpResponse(invoice)
 
 
 # REST API VIEWS
