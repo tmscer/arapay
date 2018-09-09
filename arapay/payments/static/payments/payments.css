@@ -58,6 +58,10 @@ tr.invoice-detail-active > td > div {
     padding: 0.4rem;
 }
 
+.invoice-payment-command tr > td:nth-child(2) {
+    text-align: right;
+}
+
 .caret-right {
     margin-right: 5px;
     margin-top: 0.45em;
