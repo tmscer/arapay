@@ -49,7 +49,11 @@ def by_user(request):
             'groups': list(groups),
             'account_number': '285621010/0300',
             'currency': 'CZK'}
-    return render(request, 'payments/invoices-all.html', data)
+    return render(request, 'payments/invoices-by-user.html', data)
+
+
+def by_invoice(request):
+    pass
 
 
 def generate_var_symbol(request, user_id, invoice_id):
