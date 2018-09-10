@@ -47,3 +47,8 @@ class Payment(models.Model):
     class Meta:
         verbose_name = 'payment'
         verbose_name_plural = 'payments'
+
+    class STATUS:
+        PAID = 'paid'
+        UNPAID = 'unpaid'
+        OVERPAID = 'overpaid'

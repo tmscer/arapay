@@ -40,12 +40,13 @@
             </tr>
             </thead>
             {% for i in invoices.unpaid %}
+            {% with payment=i|get_payment2:user.0 %}
             <tr class="row-master{% cycle '' ' grey-bg' %}">
                 <td><b class="caret-right"></b>{{ i.name }}</td>
                 <td>{{ i.date_added|date:"D d-m-Y" }}</td>
                 <td>{{ i.date_deadline|date:"D d-m-Y" }}</td>
                 <td class="text-right">{{ i.amount_cents|div:100 }} {{ currency }}</td>
-                <td class="text-right">{{ i.payment.amount_cents|div:100 }} {{ currency }}</td>
+                <td class="text-right">{{ payment.amount_cents|div:100}} {{ currency }}</td>
             </tr>
             <tr class="row-detail{% cycle '' ' grey-bg' %}">
                 <td colspan="5">
@@ -62,15 +63,15 @@
                             </tr>
                             <tr>
                                 <td>Var Symbol</td>
-                                <td class="text-right var-symbol-{{ i.id }}">
-                                    {% if i.payment.var_symbol %}
-                                    {{ i.payment.var_symbol }}
+                                <td class="text-right">
+                                    {% if payment.var_symbol %}
+                                    {{ payment.var_symbol }}
                                     {% else %}
                                     <button class="btn btn-primary"
-                                            onclick="generate_var_symbol('{% url 'payments:generate_var_symbol' user_id=user.0 invoice_id=i.id %}', {{ user.0 }}, {{ i.id }}, this)">
+                                            onclick="generate_var_symbol('{% url 'payments:generate_var_symbol' user.0 i.id %}', {{ user.0 }}, {{ i.id }}, this)">
                                         Generate
                                     </button>
-                                    {% endif%}
+                                    {% endif %}
                                 </td>
                             </tr>
                             <tr>
@@ -81,6 +82,7 @@
                     </div>
                 </td>
             </tr>
+            {% endwith %}
             {% endfor %}
         </table>
         {% else %}
@@ -103,12 +105,13 @@
             </tr>
             </thead>
             {% for i in invoices.overpaid %}
+            {% with payment=i|get_payment2:user.0 %}
             <tr class="row-master{% cycle '' ' grey-bg' %}">
                 <td><b class="caret-right"></b>{{ i.name }}</td>
                 <td>{{ i.date_added|date:"D d-m-Y" }}</td>
                 <td>{{ i.date_deadline|date:"D d-m-Y" }}</td>
                 <td class="text-right">{{ i.amount_cents|div:100 }} {{ currency }}</td>
-                <td class="text-right">{{ i.payment.amount_cents|div:100 }} {{ currency }}</td>
+                <td class="text-right">{{ payment.amount_cents|div:100}} {{ currency }}</td>
             </tr>
             <tr class="row-detail{% cycle '' ' grey-bg' %}">
                 <td colspan="5">
@@ -126,17 +129,18 @@
                             <tr>
                                 <td>Var Symbol</td>
                                 <td class="text-right">
-                                    {% if i.payment.var_symbol %}
-                                    {{ i.payment.var_symbol }}
+                                    {% if payment.var_symbol %}
+                                    {{ payment.var_symbol }}
                                     {% else %}
-                                    VS N/A
-                                    {% endif%}
+                                    <button class="disabled btn btn-primary">VS N/A</button>
+                                    {% endif %}
                                 </td>
                             </tr>
                         </table>
                     </div>
                 </td>
             </tr>
+            {% endwith %}
             {% endfor %}
         </table>
     </article>
@@ -157,12 +161,13 @@
             </tr>
             </thead>
             {% for i in invoices.paid %}
+            {% with payment=i|get_payment2:user.0 %}
             <tr class="row-master{% cycle '' ' grey-bg' %}">
                 <td><b class="caret-right"></b>{{ i.name }}</td>
                 <td>{{ i.date_added|date:"D d-m-Y" }}</td>
                 <td>{{ i.date_deadline|date:"D d-m-Y" }}</td>
                 <td class="text-right">{{ i.amount_cents|div:100 }} {{ currency }}</td>
-                <td class="text-right">{{ i.payment.amount_cents|div:100 }} {{ currency }}</td>
+                <td class="text-right">{{ payment.amount_cents|div:100}} {{ currency }}</td>
             </tr>
             <tr class="row-detail{% cycle '' ' grey-bg' %}">
                 <td colspan="5">
@@ -180,24 +185,24 @@
                             <tr>
                                 <td>Var Symbol</td>
                                 <td class="text-right">
-                                    {% if i.payment.var_symbol %}
-                                    {{ i.payment.var_symbol }}
+                                    {% if payment.var_symbol %}
+                                    {{ payment.var_symbol }}
                                     {% else %}
-                                    VS N/A
-                                    {% endif%}
+                                    <button class="disabled btn btn-primary">VS N/A</button>
+                                    {% endif %}
                                 </td>
                             </tr>
                         </table>
                     </div>
                 </td>
             </tr>
+            {% endwith %}
             {% endfor %}
         </table>
         {% else %}
         <h4>It looks like you have no paid invoices yet.</h4>
         {% endif %}
     </article>
-
 
 </section>
 {% endfor %}

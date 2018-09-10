@@ -24,7 +24,7 @@ SECRET_KEY = 'z2e0u+ots48_7d+$&!)9y_p%_9zm2+i8foni&_bic-l&j0%zr+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', 'abydos', 'avava.gyarab.cz']
+ALLOWED_HOSTS = ['localhost', 'abydos', 'avava.gyarab.cz', '172.16.9.44']
 
 # Application definition
 

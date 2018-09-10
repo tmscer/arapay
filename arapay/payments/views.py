@@ -36,14 +36,14 @@ def by_user(request):
     users = User.objects.all()
 
     user_invoices = {}
-    for user in users.values():
-        user_key = (user['id'], user['email'])
-        user_invoices[user_key] = {}
-        invoices_paid, invoices_unpaid, invoices_overpaid = helpers.invoices_paid_unpaid_overpaid(
-            users.get(pk=user['id']))
-        user_invoices[user_key]['paid'] = invoices_paid
-        user_invoices[user_key]['unpaid'] = invoices_unpaid
-        user_invoices[user_key]['overpaid'] = invoices_overpaid
+    for user in users:
+        user_key = (user.id, user.email)
+        invoices_paid, invoices_unpaid, invoices_overpaid = helpers.invoices_paid_unpaid_overpaid(user)
+        user_invoices[user_key] = {
+            'paid': invoices_paid,
+            'unpaid': invoices_unpaid,
+            'overpaid': invoices_overpaid,
+        }
 
     data = {'user': request.user,
             'user_invoices': user_invoices,
@@ -88,7 +88,6 @@ def by_invoice(request):
             current_users[user_key] = payment
         invoice_users[invoice_key] = current_users
 
-    print(invoice_users)
     data = {'user': request.user,
             'invoices_user': invoice_users,
             'groups': list(groups),
