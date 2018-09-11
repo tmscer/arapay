@@ -121,6 +121,10 @@ tr.row-detail-active > td > div {
     border-color: #28a745;
 }
 
+.orange-bg, .payment-status-overpaid {
+    background-color: #ffc107;
+}
+
 .grey-bg {
     background-color: rgba(0, 0, 0, 0.05);
 }
