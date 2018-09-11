@@ -72,7 +72,7 @@ def by_invoice(request):
             .order_by('last_name')
         stats['total_users'] = len(users)
         stats['amount_cents_owed'] = stats['total_users'] * invoice.amount_cents
-        invoice_key = (invoice.id, invoice.name, invoice.amount_cents, invoice.date_added, invoice.date_deadlineK)
+        invoice_key = (invoice.id, invoice.name, invoice.amount_cents, invoice.date_added, invoice.date_deadline)
         current_users = {}
         for user in users:
             user_key = (user.id, user.email)
