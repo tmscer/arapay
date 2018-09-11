@@ -115,25 +115,16 @@ def generate_var_symbol(request, user_id, invoice_id):
     else:
         return HttpResponse('{"error":"invoice.na"}')
 
-    payment_query = Payment.objects.filter(invoice_id=invoice_id, user_id=user_id)
-    if len(payment_query) == 0:
-        payment = None
-    else:
-        payment = payment_query.get()
+    payment = invoice.payment_set \
+        .get_or_create(invoice_id=invoice_id, user_id=user_id)[0]
 
     def gen_var_symbol():
-        vs = random.randint(100000, 999999)
+        vs = 10 ** 7 + random.randint(10 ** 5, 10 ** 6 - 1)
         while len(Payment.objects.filter(var_symbol=vs)) > 0:
             vs = random.randint(100000, 999999)
         return vs
 
-    if payment is None:
-        # Create it
-        payment = Payment.objects.create(invoice_id=invoice_id,
-                                         user_id=user_id,
-                                         amount_cents=0,
-                                         var_symbol=gen_var_symbol())
-    elif payment.amount_cents == invoice.amount_cents:
+    if payment.amount_cents == invoice.amount_cents:
         return HttpResponse('{"error":"paid"}')
     elif payment.amount_cents > invoice.amount_cents:
         return HttpResponse('{"error":"overpaid"}')
