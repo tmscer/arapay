@@ -24,6 +24,7 @@
 <div class="invoice-users">
 
     <h2>{{ invoice.1 }}</h2>
+    <h4>{{ invoice.3 }} ~ {{ invoice.4 }}</h4>
 
     <table class="invoice-table table">
         <thead>
@@ -36,12 +37,14 @@
         </tr>
         </thead>
         {% for user, payment in users.items %}
+        {% if user != 'stats' %}
         <tr class="{% cycle '' 'grey-bg' %}">
             <td>{{ user.1 }}</td>
-            <td><span class="solo-item payment-status payment-status-{{payment.status}}">{{ payment.status }}</span>
+            <td>
+                <span class="solo-item payment-status payment-status-{{payment.status}}">{{ payment.status }}</span>
             </td>
-            <td class="text-right">{{ invoice.2|div:100 }} CZK</td>
-            <td class="text-right">{{ payment.amount_cents|div:100 }} CZK</td>
+            <td class="text-right">{{ invoice.2|div:100 }} {{ currency }}</td>
+            <td class="text-right">{{ payment.amount_cents|div:100 }} {{ currency }}</td>
             <td class="text-right">
                 {% if payment.var_symbol %}
                 {{ payment.var_symbol }}
@@ -55,7 +58,31 @@
                 {% endif%}
             </td>
         </tr>
+        {% endif %}
         {% endfor %}
+    </table>
+
+    <table class="invoice-table table">
+        <thead>
+        <tr>
+            <th>Total Users</th>
+            <th>Paid</th>
+            <th>Unpaid</th>
+            <th>Overpaid</th>
+            <th>Amount Owed</th>
+            <th>Amount Paid</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td class="text-right">{{ users.stats.total_users }}</td>
+            <td class="text-right">{{ users.stats.n_paid }}</td>
+            <td class="text-right">{{ users.stats.n_unpaid }}</td>
+            <td class="text-right">{{ users.stats.n_overpaid }}</td>
+            <td class="text-right">{{ users.stats.amount_cents_owed|div:100 }} {{ currency }}</td>
+            <td class="text-right">{{ users.stats.amount_cents_paid|div:100 }} {{ currency }} ({{ user.stats.amount_cents_paid_percentage }}%)</td>
+        </tr>
+        </tbody>
     </table>
 
 

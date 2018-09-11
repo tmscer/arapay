@@ -33,7 +33,7 @@ def by_user(request):
     if not request.user.is_superuser:
         return HttpResponseForbidden()
     groups = request.user.groups.all().values()
-    users = User.objects.all()
+    users = User.objects.order_by('last_name')
 
     user_invoices = {}
     for user in users:
@@ -60,28 +60,41 @@ def by_invoice(request):
 
     invoice_users = {}
 
-    for invoice in Invoice.objects.all():
-        invoice_groups = invoice.groups.all()
-        users = User.objects.filter(groups__in=invoice_groups)
-        invoice_key = (invoice.id, invoice.name, invoice.amount_cents)
+    for invoice in Invoice.objects.order_by('-date_added'):
+        stats = {'total_users': 0,
+                 'n_paid': 0,
+                 'n_unpaid': 0,
+                 'n_overpaid': 0,
+                 'amount_cents_paid': 0,
+                 'amount_cents_owed': 0}
+        groups = invoice.groups.all()
+        users = User.objects.filter(groups__in=groups) \
+            .order_by('last_name')
+        stats['total_users'] = len(users)
+        stats['amount_cents_owed'] = stats['total_users'] * invoice.amount_cents
+        invoice_key = (invoice.id, invoice.name, invoice.amount_cents, invoice.date_added, invoice.date_deadlineK)
         current_users = {}
         for user in users:
             user_key = (user.id, user.email)
             payment = invoice.payment_set \
-                .get_or_create(invoice_id=invoice,
+                .get_or_create(invoice_id=invoice.id,
                                user_id=user.id)[0]
+            stats['amount_cents_paid'] += payment.amount_cents
             payment_dict = payment.__dict__
-
             if invoice.amount_cents == payment.amount_cents:
                 payment_dict['status'] = 'paid'
+                stats['n_paid'] += 1
             elif invoice.amount_cents > payment.amount_cents:
                 payment_dict['status'] = 'unpaid'
+                stats['n_unpaid'] += 1
             else:
                 payment_dict['status'] = 'overpaid'
+                stats['n_overpaid'] += 1
             current_users[user_key] = payment_dict
         invoice_users[invoice_key] = current_users
+        stats['amount_cents_paid_percentage'] = 100.0 * stats['amount_cents_paid'] / stats['amount_cents_owed']
+        invoice_users[invoice_key]['stats'] = stats
 
-    print(invoice_users)
     data = {'user': request.user,
             'invoices_user': invoice_users,
             'groups': list(groups),
