@@ -72,7 +72,7 @@ def by_invoice(request):
             .order_by('last_name')
         stats['total_users'] = len(users)
         stats['amount_cents_owed'] = stats['total_users'] * invoice.amount_cents
-        invoice_key = (invoice.id, invoice.name, invoice.amount_cents, invoice.date_added, invoice.date_deadlineK)
+        invoice_key = (invoice.id, invoice.name, invoice.amount_cents, invoice.date_added, invoice.date_deadline)
         current_users = {}
         for user in users:
             user_key = (user.id, user.email)
@@ -115,25 +115,16 @@ def generate_var_symbol(request, user_id, invoice_id):
     else:
         return HttpResponse('{"error":"invoice.na"}')
 
-    payment_query = Payment.objects.filter(invoice_id=invoice_id, user_id=user_id)
-    if len(payment_query) == 0:
-        payment = None
-    else:
-        payment = payment_query.get()
+    payment = invoice.payment_set \
+        .get_or_create(invoice_id=invoice_id, user_id=user_id)[0]
 
     def gen_var_symbol():
-        vs = random.randint(100000, 999999)
+        vs = 10 ** 7 + random.randint(10 ** 5, 10 ** 6 - 1)
         while len(Payment.objects.filter(var_symbol=vs)) > 0:
             vs = random.randint(100000, 999999)
         return vs
 
-    if payment is None:
-        # Create it
-        payment = Payment.objects.create(invoice_id=invoice_id,
-                                         user_id=user_id,
-                                         amount_cents=0,
-                                         var_symbol=gen_var_symbol())
-    elif payment.amount_cents == invoice.amount_cents:
+    if payment.amount_cents == invoice.amount_cents:
         return HttpResponse('{"error":"paid"}')
     elif payment.amount_cents > invoice.amount_cents:
         return HttpResponse('{"error":"overpaid"}')
