@@ -40,7 +40,7 @@
             </tr>
             </thead>
             {% for i in invoices.unpaid %}
-            {% with payment=i|get_payment2:user.0 %}
+            {% with payment=i|get_payment:user.0 %}
             <tr class="row-master{% cycle '' ' grey-bg' %}">
                 <td><b class="caret-right"></b>{{ i.name }}</td>
                 <td>{{ i.date_added|date:"D d-m-Y" }}</td>
@@ -105,7 +105,7 @@
             </tr>
             </thead>
             {% for i in invoices.overpaid %}
-            {% with payment=i|get_payment2:user.0 %}
+            {% with payment=i|get_payment:user.0 %}
             <tr class="row-master{% cycle '' ' grey-bg' %}">
                 <td><b class="caret-right"></b>{{ i.name }}</td>
                 <td>{{ i.date_added|date:"D d-m-Y" }}</td>
@@ -161,7 +161,7 @@
             </tr>
             </thead>
             {% for i in invoices.paid %}
-            {% with payment=i|get_payment2:user.0 %}
+            {% with payment=i|get_payment:user.0 %}
             <tr class="row-master{% cycle '' ' grey-bg' %}">
                 <td><b class="caret-right"></b>{{ i.name }}</td>
                 <td>{{ i.date_added|date:"D d-m-Y" }}</td>
