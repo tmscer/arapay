@@ -62,6 +62,7 @@
         {% endfor %}
     </table>
 
+    {% with stats=stats_all|get_item:invoice.0 %}
     <table class="invoice-table table">
         <thead>
         <tr>
@@ -75,15 +76,17 @@
         </thead>
         <tbody>
         <tr>
-            <td class="text-right">{{ users.stats.total_users }}</td>
-            <td class="text-right">{{ users.stats.n_paid }}</td>
-            <td class="text-right">{{ users.stats.n_unpaid }}</td>
-            <td class="text-right">{{ users.stats.n_overpaid }}</td>
-            <td class="text-right">{{ users.stats.amount_cents_owed|div:100 }} {{ currency }}</td>
-            <td class="text-right">{{ users.stats.amount_cents_paid|div:100 }} {{ currency }} ({{ user.stats.amount_cents_paid_percentage }}%)</td>
+            <td class="text-right">{{ stats.total_users }}</td>
+            <td class="text-right">{{ stats.n_paid }}</td>
+            <td class="text-right">{{ stats.n_unpaid }}</td>
+            <td class="text-right">{{ stats.n_overpaid }}</td>
+            <td class="text-right">{{ stats.amount_cents_owed|div:100 }} {{ currency }}</td>
+            <td class="text-right">{{ stats.amount_cents_paid|div:100 }} {{ currency }} ({{ stats.paid_percentage }}%)
+            </td>
         </tr>
         </tbody>
     </table>
+    {% endwith %}
 
 
 </div>
