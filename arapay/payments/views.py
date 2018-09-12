@@ -97,7 +97,7 @@ def by_invoice(request):
 
 def generate_var_symbol(request, user_id, invoice_id):
     print(user_id)
-    if not request.user.is_authenticated or user_id != request.user.id and not request.user.is_superuser:
+    if not request.user.is_authenticated or (user_id != request.user.id and not request.user.is_superuser):
         return HttpResponseForbidden()
     groups = User.objects.filter(pk=user_id).get().groups.all().values()
     group_ids = [g['id'] for g in groups]
