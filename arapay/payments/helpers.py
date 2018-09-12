@@ -1,4 +1,4 @@
-from payments.models import Invoice, Payment
+from payments.models import Invoice
 
 
 def invoices_paid_unpaid_overpaid(user):
@@ -6,7 +6,7 @@ def invoices_paid_unpaid_overpaid(user):
     invoices_unpaid = []
     invoices_overpaid = []
 
-    invoices_result = Invoice.objects.filter(groups__in=user.groups.all())\
+    invoices_result = Invoice.objects.filter(groups__in=user.groups.all()) \
         .distinct().order_by('-date_added')
 
     for invoice in invoices_result:

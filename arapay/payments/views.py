@@ -7,6 +7,7 @@ from rest_framework import viewsets
 
 from payments import helpers
 from payments.models import Invoice, Payment
+from payments.popo import InvoiceStats
 from payments.serializers import InvoiceSerializer, PaymentSerializer
 
 
@@ -59,44 +60,35 @@ def by_invoice(request):
     groups = request.user.groups.all().values()
 
     invoice_users = {}
+    stats_all = {}
 
     for invoice in Invoice.objects.order_by('-date_added'):
-        stats = {'total_users': 0,
-                 'n_paid': 0,
-                 'n_unpaid': 0,
-                 'n_overpaid': 0,
-                 'amount_cents_paid': 0,
-                 'amount_cents_owed': 0}
-        groups = invoice.groups.all()
-        users = User.objects.filter(groups__in=groups) \
+        users = User.objects \
+            .filter(groups__in=invoice.groups.all().values_list('id', flat=True)) \
             .order_by('last_name')
-        stats['total_users'] = len(users)
-        stats['amount_cents_owed'] = stats['total_users'] * invoice.amount_cents
-        invoice_key = (invoice.id, invoice.name, invoice.amount_cents, invoice.date_added, invoice.date_deadline)
+        stats = InvoiceStats(invoice.id, len(users))
+        stats.amount_cents_owed = stats.total_users * invoice.amount_cents
         current_users = {}
         for user in users:
-            user_key = (user.id, user.email)
-            payment = invoice.payment_set \
-                .get_or_create(invoice_id=invoice.id,
-                               user_id=user.id)[0]
-            stats['amount_cents_paid'] += payment.amount_cents
-            payment_dict = payment.__dict__
-            if invoice.amount_cents == payment.amount_cents:
-                payment_dict['status'] = 'paid'
-                stats['n_paid'] += 1
-            elif invoice.amount_cents > payment.amount_cents:
-                payment_dict['status'] = 'unpaid'
-                stats['n_unpaid'] += 1
+            payment = invoice.payment_set.get_or_create(invoice=invoice, user=user)[0].__dict__
+            stats.amount_cents_paid += payment['amount_cents']
+            if invoice.amount_cents == payment['amount_cents']:
+                payment['status'] = 'paid'
+                stats.n_paid += 1
+            elif invoice.amount_cents > payment['amount_cents']:
+                payment['status'] = 'unpaid'
+                stats.n_unpaid += 1
             else:
-                payment_dict['status'] = 'overpaid'
-                stats['n_overpaid'] += 1
-            current_users[user_key] = payment_dict
-        invoice_users[invoice_key] = current_users
-        stats['amount_cents_paid_percentage'] = 100.0 * stats['amount_cents_paid'] / stats['amount_cents_owed']
-        invoice_users[invoice_key]['stats'] = stats
+                payment['status'] = 'overpaid'
+                stats.n_overpaid += 1
+            current_users[(user.id, user.email)] = payment
+        invoice_users[(invoice.id, invoice.name,
+                       invoice.amount_cents, invoice.date_added, invoice.date_deadline)] = current_users
+        stats_all[invoice.id] = stats.as_dict()
 
     data = {'user': request.user,
             'invoices_user': invoice_users,
+            'stats_all': stats_all,
             'groups': list(groups),
             'account_number': '285621010/0300',
             'currency': 'CZK'}
