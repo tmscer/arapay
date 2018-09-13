@@ -104,13 +104,17 @@ WSGI_APPLICATION = 'arapay.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'arapay_test',
-        'USER': 'arapay',
-        'PASSWORD': 'a4_$Rk)((n%8(8 m<^wR',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-    }
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    },
+    # 'postgre': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': 'arapay_test',
+    #     'USER': 'arapay',
+    #     'PASSWORD': 'a4_$Rk)((n%8(8 m<^wR',
+    #     'HOST': '127.0.0.1',
+    #     'PORT': '5432',
+    # }
 }
 
 # Password validation
