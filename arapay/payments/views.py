@@ -3,6 +3,7 @@ import random
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render
+from django.views.decorators.http import require_http_methods
 from rest_framework import viewsets
 
 from payments import helpers
@@ -11,6 +12,7 @@ from payments.popo import InvoiceStats
 from payments.serializers import InvoiceSerializer, PaymentSerializer
 
 
+@require_http_methods(['GET'])
 def index(request):
     if not request.user.is_authenticated:
         return render(request, 'payments/base.html')
@@ -30,6 +32,7 @@ def index(request):
     return render(request, 'payments/invoices.html', data)
 
 
+@require_http_methods(['GET'])
 def by_user(request):
     if not request.user.is_superuser:
         return HttpResponseForbidden()
@@ -54,6 +57,7 @@ def by_user(request):
     return render(request, 'payments/invoices-by-user.html', data)
 
 
+@require_http_methods(['GET'])
 def by_invoice(request):
     if not request.user.is_superuser:
         return HttpResponseForbidden()
@@ -95,6 +99,7 @@ def by_invoice(request):
     return render(request, 'payments/invoices-by-invoice.html', data)
 
 
+@require_http_methods(['GET'])
 def generate_var_symbol(request, user_id, invoice_id):
     print(user_id)
     if not request.user.is_authenticated or (user_id != request.user.id and not request.user.is_superuser):
