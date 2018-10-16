@@ -6,8 +6,9 @@ def invoices_paid_unpaid_overpaid(user):
     invoices_unpaid = []
     invoices_overpaid = []
 
-    invoices_result = Invoice.objects.filter(groups__in=user.groups.all()) \
-        .distinct().order_by('-date_added')
+    invoices_result = Invoice.objects \
+        .filter(groups__in=user.groups.all()) \
+        .order_by('-date_added')
 
     for invoice in invoices_result:
         payment = invoice.payment_set.get_or_create(invoice_id=invoice.id, user_id=user.id)[0]

@@ -33,7 +33,7 @@ class Payment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     amount_cents = models.fields.BigIntegerField('amount in cents', default=0)
     date_paid = models.fields.DateField('date paid', default=dt.now)
-    var_symbol = models.fields.PositiveIntegerField(default=0,
+    var_symbol = models.fields.PositiveIntegerField('associated var symbol', default=0,
                                                     validators=[MaxValueValidator(9999999999)])
 
     def __repr__(self):
@@ -47,8 +47,9 @@ class Payment(models.Model):
     class Meta:
         verbose_name = 'payment'
         verbose_name_plural = 'payments'
+        unique_together = (("invoice", "user"),)
 
-    class STATUS:
+    class Status:
         PAID = 'paid'
         UNPAID = 'unpaid'
         OVERPAID = 'overpaid'

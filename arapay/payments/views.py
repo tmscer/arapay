@@ -3,6 +3,7 @@ import random
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render
+from django.views.decorators.http import require_GET
 from rest_framework import viewsets
 
 from payments import helpers
@@ -11,6 +12,7 @@ from payments.popo import InvoiceStats
 from payments.serializers import InvoiceSerializer, PaymentSerializer
 
 
+@require_GET
 def index(request):
     if not request.user.is_authenticated:
         return render(request, 'payments/base.html')
@@ -30,6 +32,7 @@ def index(request):
     return render(request, 'payments/invoices.html', data)
 
 
+@require_GET
 def by_user(request):
     if not request.user.is_superuser:
         return HttpResponseForbidden()
@@ -54,6 +57,7 @@ def by_user(request):
     return render(request, 'payments/invoices-by-user.html', data)
 
 
+@require_GET
 def by_invoice(request):
     if not request.user.is_superuser:
         return HttpResponseForbidden()
@@ -95,9 +99,10 @@ def by_invoice(request):
     return render(request, 'payments/invoices-by-invoice.html', data)
 
 
+@require_GET
 def generate_var_symbol(request, user_id, invoice_id):
     print(user_id)
-    if not request.user.is_authenticated or user_id != request.user.id and not request.user.is_superuser:
+    if not request.user.is_authenticated or (user_id != request.user.id and not request.user.is_superuser):
         return HttpResponseForbidden()
     groups = User.objects.filter(pk=user_id).get().groups.all().values()
     group_ids = [g['id'] for g in groups]
