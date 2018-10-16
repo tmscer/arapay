@@ -24,14 +24,12 @@ SECRET_KEY = 'z2e0u+ots48_7d+$&!)9y_p%_9zm2+i8foni&_bic-l&j0%zr+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', 'abydos', 'avava.gyarab.cz', '172.16.9.44']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 # Application definition
 
 INSTALLED_APPS = [
     'mathfilters',
-    'rest_framework',
-    'rest_framework.authtoken',
     'social_django',
     'payments.apps.PaymentsConfig',
     'corsheaders',
@@ -47,8 +45,7 @@ AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2',
     'django.contrib.auth.backends.ModelBackend')
 
-_GOOGLE_SECRETS_FILE = os.path.expanduser('~') + '/client_secrets/arapay/client_secret.json'
-with open(_GOOGLE_SECRETS_FILE) as f:
+with open(os.path.expanduser('~') + '/client_secrets/arapay/client_secret.json') as f:
     GOOGLE_OAUTH2_CLIENT_SECRETS = json.loads(''.join(f.readlines()))
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = GOOGLE_OAUTH2_CLIENT_SECRETS['web']['client_id']
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = GOOGLE_OAUTH2_CLIENT_SECRETS['web']['client_secret']
@@ -111,7 +108,7 @@ DATABASES = {
     #     'ENGINE': 'django.db.backends.postgresql',
     #     'NAME': 'arapay_test',
     #     'USER': 'arapay',
-    #     'PASSWORD': 'a4_$Rk)((n%8(8 m<^wR',
+    #     'PASSWORD': '',
     #     'HOST': '127.0.0.1',
     #     'PORT': '5432',
     # }
