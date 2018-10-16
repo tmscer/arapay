@@ -2,6 +2,7 @@
 
 PY="../venv/bin/python"
 
-PY manage.py collectstatic
-PY manage.py --check deploy
+eval "$PY manage.py migrate"
+eval "$PY manage.py collectstatic"
+eval "$PY manage.py check --deploy"
 
