@@ -9,3 +9,8 @@ def get_payment(invoice, user_id):
 @register.filter
 def get_item(dictionary, key):
     return dictionary.get(key)
+
+
+@register.filter
+def make_tags(tag, items):
+    return ''.join(("<%s>%s</%s>" % (tag, a, tag) for a in items.split(',')))

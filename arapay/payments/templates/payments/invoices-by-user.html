@@ -32,11 +32,9 @@
         <table class="table invoice-table">
             <thead>
             <tr>
-                <th>Name</th>
-                <th>Date Added</th>
-                <th>Date Due</th>
-                <th>Amount</th>
-                <th>Amount Paid</th>
+                {% autoescape off %}
+                {{ "th"|make_tags:"Name,Date Added,Date Due,Amount,Amount Paid" }}
+                {% endautoescape %}
             </tr>
             </thead>
             {% for i in invoices.unpaid %}
@@ -96,11 +94,9 @@
         <table class="table invoice-table">
             <thead>
             <tr>
-                <th>Name</th>
-                <th>Date Added</th>
-                <th>Date Due</th>
-                <th>Amount</th>
-                <th>Amount Paid</th>
+                {% autoescape off %}
+                {{ "th"|make_tags:"Name,Date Added,Date Due,Amount,Amount Paid" }}
+                {% endautoescape %}
             </tr>
             </thead>
             {% for i in invoices.overpaid %}
@@ -151,11 +147,9 @@
         <table class="table invoice-table">
             <thead>
             <tr>
-                <th>Name</th>
-                <th>Date Added</th>
-                <th>Date Due</th>
-                <th>Amount</th>
-                <th>Amount Paid</th>
+                {% autoescape off %}
+                {{ "th"|make_tags:"Name,Date Added,Date Due,Amount,Amount Paid" }}
+                {% endautoescape %}
             </tr>
             </thead>
             {% for i in invoices.paid %}
