@@ -82,8 +82,7 @@
                     </div>
                 </td>
             </tr>
-            {% endwith %}
-            {% endfor %}
+            {% endwith %}{% endfor %}
         </table>
         {% else %}
         <h4>Congratulations! There are no unpaid invoices!</h4>
@@ -140,8 +139,7 @@
                     </div>
                 </td>
             </tr>
-            {% endwith %}
-            {% endfor %}
+            {% endwith %}{% endfor %}
         </table>
     </article>
     {% endif %}
@@ -173,9 +171,7 @@
                 <td colspan="5">
                     <div>
                         <span class="invoice-description">
-                        {% autoescape off %}
-                        {{ i.description }}
-                        {% endautoescape %}
+                        {% autoescape off %}{{ i.description }}{% endautoescape %}
                         </span>
                         <table class="invoice-payment-command table table-striped">
                             <tr>
@@ -196,8 +192,7 @@
                     </div>
                 </td>
             </tr>
-            {% endwith %}
-            {% endfor %}
+            {% endwith %}{% endfor %}
         </table>
         {% else %}
         <h4>It looks like you have no paid invoices yet.</h4>
@@ -205,6 +200,5 @@
     </article>
 
 </section>
-{% endfor %}
-{% endif %}
+{% endfor %}{% endif %}
 {% endblock content %}
