@@ -29,11 +29,9 @@
     <table class="invoice-table table">
         <thead>
         <tr>
-            <th>Email</th>
-            <th>Status</th>
-            <th>Amount</th>
-            <th>Amount Paid</th>
-            <th>Variable Symbol</th>
+            {% autoescape off %}
+            {{ "th"|make_tags:"Email,Status,Amount,Amount Paid,Variable Symbol" }}
+            {% endautoescape %}
         </tr>
         </thead>
         {% for user, payment in users.items %}
@@ -65,12 +63,9 @@
     <table class="invoice-table table">
         <thead>
         <tr>
-            <th>Total Users</th>
-            <th>Paid</th>
-            <th>Unpaid</th>
-            <th>Overpaid</th>
-            <th>Amount Owed</th>
-            <th>Amount Paid</th>
+            {% autoescape off %}
+            {{ "th"|make_tags:"Total Users,Paid,Unpaid,Overpaid,Amount Owed,Amount Paid" }}
+            {% endautoescape %}
         </tr>
         </thead>
         <tbody>
