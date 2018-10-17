@@ -20,15 +20,17 @@ def index(request):
 
     invoices_paid, invoices_unpaid, invoices_overpaid = helpers.invoices_paid_unpaid_overpaid(request.user)
 
-    data = {'user': request.user,
-            'invoices': {
-                'paid': invoices_paid,
-                'unpaid': invoices_unpaid,
-                'overpaid': invoices_overpaid,
-            },
-            'groups': list(groups),
-            'account_number': '285621010/0300',
-            'currency': 'CZK'}
+    data = {
+        'user': request.user,
+        'invoices': {
+            'paid': invoices_paid,
+            'unpaid': invoices_unpaid,
+            'overpaid': invoices_overpaid,
+        },
+        'groups': list(groups),
+        'account_number': '285621010/0300',
+        'currency': 'CZK'
+    }
     return render(request, 'payments/invoices.html', data)
 
 
@@ -49,11 +51,13 @@ def by_user(request):
             'overpaid': invoices_overpaid,
         }
 
-    data = {'user': request.user,
-            'user_invoices': user_invoices,
-            'groups': list(groups),
-            'account_number': '285621010/0300',
-            'currency': 'CZK'}
+    data = {
+        'user': request.user,
+        'user_invoices': user_invoices,
+        'groups': list(groups),
+        'account_number': '285621010/0300',
+        'currency': 'CZK'
+    }
     return render(request, 'payments/invoices-by-user.html', data)
 
 
@@ -90,12 +94,14 @@ def by_invoice(request):
                        invoice.amount_cents, invoice.date_added, invoice.date_deadline)] = current_users
         stats_all[invoice.id] = stats.as_dict()
 
-    data = {'user': request.user,
-            'invoices_user': invoice_users,
-            'stats_all': stats_all,
-            'groups': list(groups),
-            'account_number': '285621010/0300',
-            'currency': 'CZK'}
+    data = {
+        'user': request.user,
+        'invoices_user': invoice_users,
+        'stats_all': stats_all,
+        'groups': list(groups),
+        'account_number': '285621010/0300',
+        'currency': 'CZK'
+    }
     return render(request, 'payments/invoices-by-invoice.html', data)
 
 

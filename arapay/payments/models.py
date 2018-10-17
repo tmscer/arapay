@@ -2,7 +2,7 @@ from datetime import datetime as dt
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
-from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.validators import MaxValueValidator
 from django.db import models
 
 User = get_user_model()

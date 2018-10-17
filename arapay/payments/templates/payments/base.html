@@ -2,22 +2,16 @@
 {% load static %}
 <html>
 <head>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
-            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'payments/payments.css' %}">
-
     {% block head %}{% endblock head %}
-
     <title>{% block title %}Arapay{% endblock title %}</title>
 </head>
 <body>
 
 <div class="wrapper">
     <div class="container">
-
         <nav class="main-nav">
             <ul class="nav">
                 {% if user.is_authenticated %}
@@ -27,21 +21,16 @@
                 <li>Not Logged In</li>
                 <li><a href="/login/google-oauth2/?next=/p">Login</a></li>
                 {% endif %}
-                {% block nav_items %}
-                {% endblock nav_items %}
+                {% block nav_items %}{% endblock nav_items %}
             </ul>
         </nav>
-
         <main class="content">
-            {% block content %}
-            {% endblock content %}
+            {% block content %}{% endblock content %}
         </main>
-
         <footer class="footer">
             {% now "Y" as current_year %}
             Copyright © {{ current_year }} Tomáš Černý (tmscer@gmail.com)
         </footer>
-
     </div>
 </div>
 

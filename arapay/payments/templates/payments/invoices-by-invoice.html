@@ -58,8 +58,7 @@
                 {% endif%}
             </td>
         </tr>
-        {% endif %}
-        {% endfor %}
+        {% endif %}{% endfor %}
     </table>
 
     {% with stats=stats_all|get_item:invoice.0 %}
@@ -87,12 +86,7 @@
         </tbody>
     </table>
     {% endwith %}
-
-
 </div>
 
-{% endfor %}
-
-{% endif %}
-
+{% endfor %}{% endif %}
 {% endblock content %}

@@ -43,7 +43,8 @@ INSTALLED_APPS = [
 
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2',
-    'django.contrib.auth.backends.ModelBackend')
+    'django.contrib.auth.backends.ModelBackend'
+)
 
 with open(os.path.expanduser('~') + '/client_secrets/arapay/client_secret.json') as f:
     GOOGLE_OAUTH2_CLIENT_SECRETS = json.loads(''.join(f.readlines()))
