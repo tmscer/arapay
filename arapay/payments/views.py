@@ -41,7 +41,7 @@ def by_user(request):
 
     user_invoices = {}
     for user in users:
-        user_key = (user.id, user.email)
+        user_key = (user.id, user.email, user.username)
         invoices_paid, invoices_unpaid, invoices_overpaid = helpers.invoices_paid_unpaid_overpaid(user)
         user_invoices[user_key] = {
             'paid': invoices_paid,
@@ -61,7 +61,7 @@ def by_user(request):
 
 @require_GET
 def by_invoice(request):
-    if not request.user.is_superuser:
+    if not request.user.is_staff:
         return HttpResponseForbidden()
     groups = request.user.groups.all().values()
 
@@ -105,7 +105,7 @@ def by_invoice(request):
 
 @require_GET
 def generate_var_symbol(request, user_id, invoice_id):
-    if not request.user.is_authenticated or (user_id != request.user.id and not request.user.is_superuser):
+    if not request.user.is_authenticated or (user_id != request.user.id and not request.user.is_staff):
         return HttpResponseForbidden()
     groups = User.objects.filter(pk=user_id).get().groups.all().values()
     group_ids = [g['id'] for g in groups]
