@@ -107,7 +107,6 @@ def by_invoice(request):
 
 @require_GET
 def generate_var_symbol(request, user_id, invoice_id):
-    print(user_id)
     if not request.user.is_authenticated or (user_id != request.user.id and not request.user.is_superuser):
         return HttpResponseForbidden()
     groups = User.objects.filter(pk=user_id).get().groups.all().values()
@@ -124,7 +123,7 @@ def generate_var_symbol(request, user_id, invoice_id):
     def gen_var_symbol():
         vs = 10 ** 7 + random.randint(10 ** 5, 10 ** 6 - 1)
         while len(Payment.objects.filter(var_symbol=vs)) > 0:
-            vs = random.randint(100000, 999999)
+            vs = 10 ** 7 + random.randint(10 ** 5, 10 ** 6 - 1)
         return vs
 
     if payment.amount_cents == invoice.amount_cents:
