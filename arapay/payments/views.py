@@ -133,19 +133,6 @@ def generate_var_symbol(request, user_id, invoice_id):
     elif payment.var_symbol != 0:
         return HttpResponse('{"error":"var_symbol.exists"}')
     else:
-        # Var symbol has length 6
         payment.var_symbol = gen_var_symbol()
         payment.save()
     return HttpResponse('{"var_symbol":%s}' % payment.var_symbol)
-
-
-# REST API VIEWS
-
-class InvoiceViewSet(viewsets.ModelViewSet):
-    queryset = Invoice.objects.all()
-    serializer_class = InvoiceSerializer
-
-
-class PaymentViewSet(viewsets.ModelViewSet):
-    queryset = Payment.objects.all()
-    serializer_class = PaymentSerializer
