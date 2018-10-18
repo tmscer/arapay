@@ -15,11 +15,17 @@
         <nav class="main-nav">
             <ul class="nav">
                 {% if user.is_authenticated %}
-                <li>Logged in as <b>{{ user.email }}</b></li>
-                <li><a href="/accounts/logout/?next=/">Logout</a></li>
+                    <li>Logged in as <b>{{ user.email }}</b></li>
+                    <li><a href="/accounts/logout/?next=/">Logout</a></li>
+                    <li><a href="{% url 'payments:index' %}">Me</a></li>
+                    {% if user.is_superuser %}
+                        <li><a href="{% url 'payments:by_user' %}">Show by User</a></li>
+                        <li><a href="{% url 'payments:by_invoice' %}">Show by Invoice</a></li>
+                        <li><a href="/admin">Admin</a></li>
+                    {% endif %}
                 {% else %}
-                <li>Not Logged In</li>
-                <li><a href="/login/google-oauth2/?next=/p">Login</a></li>
+                    <li>Not Logged In</li>
+                    <li><a href="/login/google-oauth2/?next=/p">Login</a></li>
                 {% endif %}
                 {% block nav_items %}{% endblock nav_items %}
             </ul>

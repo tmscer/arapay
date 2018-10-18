@@ -4,12 +4,10 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render
 from django.views.decorators.http import require_GET
-from rest_framework import viewsets
 
 from payments import helpers
 from payments.models import Invoice, Payment
 from payments.popo import InvoiceStats
-from payments.serializers import InvoiceSerializer, PaymentSerializer
 
 
 @require_GET
@@ -107,7 +105,6 @@ def by_invoice(request):
 
 @require_GET
 def generate_var_symbol(request, user_id, invoice_id):
-    print(user_id)
     if not request.user.is_authenticated or (user_id != request.user.id and not request.user.is_superuser):
         return HttpResponseForbidden()
     groups = User.objects.filter(pk=user_id).get().groups.all().values()
@@ -124,7 +121,7 @@ def generate_var_symbol(request, user_id, invoice_id):
     def gen_var_symbol():
         vs = 10 ** 7 + random.randint(10 ** 5, 10 ** 6 - 1)
         while len(Payment.objects.filter(var_symbol=vs)) > 0:
-            vs = random.randint(100000, 999999)
+            vs = 10 ** 7 + random.randint(10 ** 5, 10 ** 6 - 1)
         return vs
 
     if payment.amount_cents == invoice.amount_cents:
@@ -134,19 +131,6 @@ def generate_var_symbol(request, user_id, invoice_id):
     elif payment.var_symbol != 0:
         return HttpResponse('{"error":"var_symbol.exists"}')
     else:
-        # Var symbol has length 6
         payment.var_symbol = gen_var_symbol()
         payment.save()
     return HttpResponse('{"var_symbol":%s}' % payment.var_symbol)
-
-
-# REST API VIEWS
-
-class InvoiceViewSet(viewsets.ModelViewSet):
-    queryset = Invoice.objects.all()
-    serializer_class = InvoiceSerializer
-
-
-class PaymentViewSet(viewsets.ModelViewSet):
-    queryset = Payment.objects.all()
-    serializer_class = PaymentSerializer
