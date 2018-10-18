@@ -4,12 +4,10 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render
 from django.views.decorators.http import require_GET
-from rest_framework import viewsets
 
 from payments import helpers
 from payments.models import Invoice, Payment
 from payments.popo import InvoiceStats
-from payments.serializers import InvoiceSerializer, PaymentSerializer
 
 
 @require_GET
