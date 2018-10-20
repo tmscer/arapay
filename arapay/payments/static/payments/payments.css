@@ -132,3 +132,17 @@ tr.row-detail-active > td > div {
 .payment-status {
     text-transform: uppercase;
 }
+
+.align-center {
+    text-align: right;
+}
+
+.qr-code {
+    display: inline-block;
+    width: 200px;
+    height: 200px;
+    background-position: 50%;
+    background-size: 100%;
+    margin-top: -1.2em;
+    margin-right: 1em;
+}

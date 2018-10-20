@@ -35,51 +35,62 @@
             </thead>
             {% for i in invoices.unpaid %}
             {% with payment=i|get_payment:user.id %}
+            {% with invoice_amount=i.amount_cents|div:100 %}
+            {% with payment_amount=payment.amount_cents|div:100 %}
+            {% with owed_amount=i.amount_cents|amount_owed:payment.amount_cents %}
             <tr class="row-master{% cycle '' ' grey-bg' %}">
                 <td><b class="caret-right"></b>{{ i.name }}</td>
                 <td>{{ i.date_added|date:"D d-m-Y" }}</td>
                 <td>{{ i.date_deadline|date:"D d-m-Y" }}</td>
-                <td class="text-right">{{ i.amount_cents|div:100 }} {{ currency }}</td>
-                <td class="text-right">{{ payment.amount_cents|div:100}} {{ currency }}</td>
+                <td class="text-right">{{ invoice_amount }} {{ currency }}</td>
+                <td class="text-right">{{ payment_amount }} {{ currency }}</td>
             </tr>
             <tr class="row-detail{% cycle '' ' grey-bg' %}">
                 <td colspan="5">
-                    <div>
+                    <div class="align-center">
                         <span class="invoice-description">
                         {% autoescape off %}
-                        {{ i.description }}
+                            {{ i.description }}
                         {% endautoescape %}
                         </span>
+                        {% if payment.var_symbol %}
+                            <span class="qr-code" style="background-image: url('https://api.paylibo.com/paylibo/generator/czech/image?compress=true&size=230&accountNumber={{ account_number_num }}&bankCode={{ account_number_bank }}&currency=CZK&vs={{ payment.var_symbol }}&date={{ i.date_deadline|date:'Y-m-d' }}&message=arapay-{{ i.name }}-{{ user.username }}&amount={{ owed_amount }}');"></span>
+                        {% else %}
+                            <span class="qr-code"></span>
+                        {% endif %}
                         <table class="invoice-payment-command table table-striped">
-                            <tr>
-                                <td>Acc. #</td>
-                                <td class="text-right">{{ account_number }}</td>
-                            </tr>
-                            <tr>
-                                <td>Var Symbol</td>
-                                <td class="text-right">
-                                    {% if payment.var_symbol %}
-                                    {{ payment.var_symbol }}
-                                    {% else %}
-                                    <button class="btn btn-primary"
-                                            onclick="generate_var_symbol('{% url 'payments:generate_var_symbol' user.id i.id %}', {{ user.id }}, {{ i.id }}, this)">
-                                        Generate
-                                    </button>
-                                    {% endif %}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Message</td>
-                                <td class="text-right">arapay-{{ user.username }}-{{ i.name }}</td>
-                            </tr>
+                            <tbody>
+                                <tr>
+                                    <td>Acc. #</td>
+                                    <td class="text-right">{{ account_number }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Var Symbol</td>
+                                    <td class="text-right">
+                                        {% if payment.var_symbol %}
+                                        {{ payment.var_symbol }}
+                                        {% else %}
+                                        <button class="btn btn-primary"
+                                                onclick="generate_var_symbol('{% url 'payments:generate_var_symbol' user.id i.id %}', {{ user.id }}, {{ i.id }}, this)">
+                                            Generate
+                                        </button>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Message</td>
+                                    <td class="text-right">arapay-{{ i.name }}-{{ user.username }}</td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </td>
             </tr>
-            {% endwith %}{% endfor %}
+            {% endwith %}{% endwith %}{% endwith %}{% endwith %}
+            {% endfor %}
         </table>
         {% else %}
-        <h4>Congratulations! There are no unpaid invoices!</h4>
+            <h4>Congratulations! There are no unpaid invoices!</h4>
         {% endif %}
     </article>
 
