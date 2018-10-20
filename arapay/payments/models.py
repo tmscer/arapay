@@ -32,7 +32,7 @@ class Payment(models.Model):
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     amount_cents = models.fields.BigIntegerField('amount in cents', default=0)
-    date_paid = models.fields.DateField('date paid', default=dt.now)
+    date_paid = models.fields.DateField('date paid', null=True)
     var_symbol = models.fields.PositiveIntegerField('associated var symbol', default=0,
                                                     validators=[MaxValueValidator(9999999999)])
 
