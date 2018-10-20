@@ -1,3 +1,5 @@
+from django.utils.encoding import escape_uri_path
+
 from payments.models import Invoice
 
 
@@ -20,3 +22,24 @@ def invoices_paid_unpaid_overpaid(user):
             invoices_overpaid.append(invoice)
 
     return invoices_paid, invoices_unpaid, invoices_overpaid
+
+
+def url_args(args):
+    return ''.join(("&%s=%s" % (key, escape_uri_path(value)) for key, value in args.items()))
+
+
+def qr_code_url(invoice, payment, user):
+    base_url = "https://api.paylibo.com/paylibo/generator/czech/image?compress=true&size=230"
+    deadline = invoice.date_deadline
+    args = {
+        'accountNumber': '285621010',
+        'bankCode': '0300',
+        'currency': 'CZK',
+        'vs': str(payment.var_symbol),
+        'date': "{y}-{m}-{d}".format(y=deadline.year,
+                                     m=deadline.month,
+                                     d=deadline.day),
+        'message': 'arapay-%s-%s' % (invoice.name, user.username),
+        'amount': str((invoice.amount_cents - payment.amount_cents) / 100)
+    }
+    return base_url + url_args(args)

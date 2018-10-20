@@ -6,8 +6,10 @@ from django.shortcuts import render
 from django.views.decorators.http import require_GET
 
 from payments import helpers
+from payments.helpers import qr_code_url
 from payments.models import Invoice, Payment
 from payments.popo import InvoiceStats
+import json
 
 
 @require_GET
@@ -27,6 +29,8 @@ def index(request):
         },
         'groups': list(groups),
         'account_number': '285621010/0300',
+        'account_number_num': '285621010',
+        'account_number_bank': '0300',
         'currency': 'CZK'
     }
     return render(request, 'payments/invoices.html', data)
@@ -54,6 +58,8 @@ def by_user(request):
         'user_invoices': user_invoices,
         'groups': list(groups),
         'account_number': '285621010/0300',
+        'account_number_num': '285621010',
+        'account_number_bank': '0300',
         'currency': 'CZK'
     }
     return render(request, 'payments/invoices-by-user.html', data)
@@ -98,6 +104,8 @@ def by_invoice(request):
         'stats_all': stats_all,
         'groups': list(groups),
         'account_number': '285621010/0300',
+        'account_number_num': '285621010',
+        'account_number_bank': '0300',
         'currency': 'CZK'
     }
     return render(request, 'payments/invoices-by-invoice.html', data)
@@ -133,4 +141,8 @@ def generate_var_symbol(request, user_id, invoice_id):
     else:
         payment.var_symbol = gen_var_symbol()
         payment.save()
-    return HttpResponse('{"var_symbol":%s}' % payment.var_symbol)
+    response = {
+        'var_symbol': str(payment.var_symbol),
+        'url': qr_code_url(invoice, payment, request.user)
+    }
+    return HttpResponse(json.dumps(response))

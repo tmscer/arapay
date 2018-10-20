@@ -14,3 +14,8 @@ def get_item(dictionary, key):
 @register.filter
 def make_tags(tag, items):
     return ''.join(("<%s>%s</%s>" % (tag, a, tag) for a in items.split(',')))
+
+
+@register.filter
+def amount_owed(invoice_amount_cents, payment_amount_cents):
+    return (invoice_amount_cents - payment_amount_cents) / 100

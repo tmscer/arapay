@@ -20,10 +20,14 @@ $(document).ready(function() {
 });
 
 function generate_var_symbol(url, user_id, invoice_id, elem) {
-    $.ajax({url: url, dataType: "json", success: function(result) {
-        console.log(result);
-        if ('var_symbol' in result) {
-            $(elem).parent().text(result['var_symbol']);
+    $.ajax({url: url, dataType: "json", success:
+        function(result) {
+            console.log(result);
+            console.log(result["url"]);
+            var parent = $(elem).parent();
+            parent.parent().parent().parent().parent()
+                .find(".qr-code").css("background-image", "url(" + result["url"] + ")");
+            parent.text(result["var_symbol"]);
         }
-    }});
+    });
 }
