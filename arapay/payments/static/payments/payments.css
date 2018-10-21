@@ -140,7 +140,7 @@ tr.row-detail-active > td > div {
     text-transform: uppercase;
 }
 
-.align-center {
+.invoice-detail-wrapper {
     text-align: right;
 }
 

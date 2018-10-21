@@ -48,12 +48,17 @@
             </tr>
             <tr class="row-detail{% cycle '' ' grey-bg' %}">
                 <td colspan="5">
-                    <div>
+                    <div class="invoice-detail-wrapper">
                         <span class="invoice-description">
                         {% autoescape off %}
                         {{ i.description }}
                         {% endautoescape %}
                         </span>
+                        {% if payment.var_symbol %}
+                            <span class="qr-code" style="background-image: url('https://api.paylibo.com/paylibo/generator/czech/image?compress=true&size=230&accountNumber={{ account_number_num }}&bankCode={{ account_number_bank }}&currency=CZK&vs={{ payment.var_symbol }}&date={{ i.date_deadline|date:'Y-m-d' }}&message=arapay-{{ i.name }}-{{ user.username }}&amount={{ owed_amount }}');"></span>
+                        {% else %}
+                            <span class="qr-code"></span>
+                        {% endif %}
                         <table class="invoice-payment-command table table-striped">
                             <tr>
                                 <td>Acc. #</td>
