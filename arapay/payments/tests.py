@@ -24,7 +24,7 @@ class EndpointTest(TestCase):
     def test(self, path, expected_code, attrs):
         attrs.update({
             'Content-Type': 'text/html; charset=utf-8',
-            'X-Frame-Options': 'SAMEORIGIN'
+            'X-Frame-Options': 'DENY'
         })
         response = client.get(path)
         self.assertEqual(expected_code, response.status_code)
