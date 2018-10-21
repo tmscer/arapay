@@ -47,10 +47,18 @@ def by_user(request):
     for user in users:
         user_key = (user.id, user.email, user.username)
         invoices_paid, invoices_unpaid, invoices_overpaid = helpers.invoices_paid_unpaid_overpaid(user)
+        stats = InvoiceStats(user.id, len(invoices_paid) + len(invoices_unpaid) + len(invoices_overpaid))
+        stats.n_paid = len(invoices_paid)
+        stats.n_unpaid = len(invoices_unpaid)
+        stats.n_overpaid = len(invoices_overpaid)
+        for invoice in invoices_paid + invoices_unpaid + invoices_overpaid:
+            stats.amount_cents_owed += invoice.amount_cents
+            stats.amount_cents_paid += invoice.payment_set.get(user_id=user.id).amount_cents
         user_invoices[user_key] = {
             'paid': invoices_paid,
             'unpaid': invoices_unpaid,
             'overpaid': invoices_overpaid,
+            'stats': stats.as_dict(),
         }
 
     data = {
@@ -79,7 +87,7 @@ def by_invoice(request):
             .filter(groups__in=invoice.groups.all().values_list('id', flat=True)) \
             .order_by('last_name')
         stats = InvoiceStats(invoice.id, len(users))
-        stats.amount_cents_owed = stats.total_users * invoice.amount_cents
+        stats.amount_cents_owed = stats.n_total * invoice.amount_cents
         current_users = {}
         for user in users:
             payment = invoice.payment_set.get_or_create(invoice=invoice, user=user)[0].__dict__
