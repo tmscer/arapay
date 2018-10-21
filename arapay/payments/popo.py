@@ -3,9 +3,9 @@
 
 class InvoiceStats:
 
-    def __init__(self, invoice_id, total_users):
-        self.invoice_id = invoice_id
-        self.total_users = total_users
+    def __init__(self, i, n_total):
+        self.i = i
+        self.n_total = n_total
         self.n_paid = 0
         self.n_unpaid = 0
         self.n_overpaid = 0
@@ -20,9 +20,9 @@ class InvoiceStats:
             return 100 * self.amount_cents_paid / self.amount_cents_owed
 
     def __repr__(self):
-        return "InvoiceStats(invoice_id={}, total_users={}, n_paid={}, n_unpaid={}, n_overpaid={}, " \
+        return "InvoiceStats(i={}, n_total={}, n_paid={}, n_unpaid={}, n_overpaid={}, " \
                "amount_cents_paid={}, amount_cents_owed={})" \
-            .format(self.invoice_id, self.total_users, self.n_paid, self.n_unpaid, self.n_overpaid,
+            .format(self.i, self.n_total, self.n_paid, self.n_unpaid, self.n_overpaid,
                     self.amount_cents_paid, self.amount_cents_owed)
 
     def as_dict(self):

@@ -25,9 +25,9 @@
 
 <section class="invoices">
 
+    {% if invoices.unpaid %}
     <article class="invoices-unpaid">
         <h2>Unpaid Invoices</h2>
-        {% if invoices.unpaid %}
         {% include 'payments/invoices-actions.html' %}
         <table class="table invoice-table">
             <thead>
@@ -87,10 +87,8 @@
             </tr>
             {% endwith %}{% endfor %}
         </table>
-        {% else %}
-        <h4>Congratulations! There are no unpaid invoices!</h4>
-        {% endif %}
     </article>
+    {% endif %}
 
     {% if invoices.overpaid %}
     <article class="invoices-overpaid">
@@ -145,9 +143,9 @@
     </article>
     {% endif %}
 
+    {% if invoices.paid %}
     <article class="invoices-paid">
         <h2>Paid Invoices</h2>
-        {% if invoices.paid %}
         {% include 'payments/invoices-actions.html' %}
         <table class="table invoice-table">
             <thead>
@@ -193,10 +191,32 @@
             </tr>
             {% endwith %}{% endfor %}
         </table>
-        {% else %}
-        <h4>It looks like you have no paid invoices yet.</h4>
-        {% endif %}
     </article>
+    {% endif %}
+
+    {% with stats=invoices.stats %}
+    <table class="invoice-table table">
+        <thead>
+        <tr>
+            {% autoescape off %}
+            {{ "th"|make_tags:"Total Invoices,Paid,Unpaid,Overpaid,Amount Owed,Amount Paid" }}
+            {% endautoescape %}
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td class="text-right">{{ stats.total_users }}</td>
+            <td class="text-right">{{ stats.n_paid }}</td>
+            <td class="text-right">{{ stats.n_unpaid }}</td>
+            <td class="text-right">{{ stats.n_overpaid }}</td>
+            <td class="text-right">{{ stats.amount_cents_owed|div:100 }} {{ currency }}</td>
+            <td class="text-right">{{ stats.amount_cents_paid|div:100 }} {{ currency }}
+                ({{ stats.paid_percentage|floatformat:2 }}%)
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    {% endwith %}
 
 </section>
 {% endfor %}{% endif %}

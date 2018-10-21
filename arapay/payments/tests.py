@@ -59,8 +59,8 @@ class TemplateTagTest(TestCase):
 
 class PopoTest(TestCase):
     def test_invoice_stats(self):
-        invoice_stats = InvoiceStats(invoice_id=0,
-                                     total_users=[
+        invoice_stats = InvoiceStats(id=0,
+                                     n_total=[
                                          {'name': 'me',
                                           'age': 20},
                                          {'name': 'you',
