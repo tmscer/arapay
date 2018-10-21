@@ -38,7 +38,7 @@ def index(request):
 
 @require_GET
 def by_user(request):
-    if not request.user.is_superuser:
+    if not request.user.is_staff:
         return HttpResponseForbidden()
     groups = request.user.groups.all().values()
     users = User.objects.order_by('last_name')
