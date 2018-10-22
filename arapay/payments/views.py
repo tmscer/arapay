@@ -123,7 +123,8 @@ def by_invoice(request):
 def generate_var_symbol(request, user_id, invoice_id):
     if not request.user.is_authenticated or (user_id != request.user.id and not request.user.is_staff):
         return HttpResponseForbidden()
-    groups = User.objects.filter(pk=user_id).get().groups.all().values()
+    user = User.objects.get(id=user_id)
+    groups = user.groups.all().values()
     group_ids = [g['id'] for g in groups]
     invoice_result = Invoice.objects.filter(id=invoice_id, groups__in=group_ids)
     if len(invoice_result) != 0:
@@ -151,6 +152,6 @@ def generate_var_symbol(request, user_id, invoice_id):
         payment.save()
     response = {
         'var_symbol': str(payment.var_symbol),
-        'url': qr_code_url(invoice, payment, request.user)
+        'url': qr_code_url(invoice, payment, user)
     }
     return HttpResponse(json.dumps(response))
