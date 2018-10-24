@@ -25,7 +25,7 @@ def invoices_paid_unpaid_overpaid(user):
 
 
 def url_args(args):
-    return ''.join(("&%s=%s" % (key, escape_uri_path(value)) for key, value in args.items()))
+    return ''.join(("&%s=%s" % (key, escape_uri_path(str(value))) for key, value in args.items()))
 
 
 def qr_code_url(invoice, payment, user):
@@ -35,11 +35,11 @@ def qr_code_url(invoice, payment, user):
         'accountNumber': invoice.account_info.account_number,
         'bankCode': invoice.account_info.bank_code,
         'currency': 'CZK',
-        'vs': str(payment.var_symbol),
+        'vs': payment.var_symbol,
         'date': "{y}-{m}-{d}".format(y=deadline.year,
                                      m=deadline.month,
                                      d=deadline.day),
         'message': 'arapay-%s-%s' % (invoice.name, user.username),
-        'amount': str((invoice.amount_cents - payment.amount_cents) / 100)
+        'amount': (invoice.amount_cents - payment.amount_cents) / 100
     }
     return base_url + url_args(args)

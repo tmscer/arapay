@@ -4,38 +4,20 @@ from datetime import datetime as dt
 from django.contrib.auth.models import User
 from django.test import Client
 from django.test import TestCase
-from parameterized import parameterized
 
 import payments.templatetags.payments_tags as tags
-from payments.models import Payment, Invoice
+from payments.models import Payment, Invoice, AccountInfo
 from payments.popo import InvoiceStats
 
 client = Client(enforce_csrf_checks=True)
 
 
-class EndpointTest(TestCase):
-    @parameterized.expand([
-        ('/', 302, {'Location': 'p/'}),
-        ('/p/', 200, {}),
-        ('/p/by_invoice/', 403, {}),
-        ('/p/by_user/', 403, {}),
-        ('/p/gen-var-sym/1/1/', 403, {})
-    ])
-    def test(self, path, expected_code, attrs):
-        attrs.update({
-            'Content-Type': 'text/html; charset=utf-8',
-            'X-Frame-Options': 'DENY'
-        })
-        response = client.get(path)
-        self.assertEqual(expected_code, response.status_code)
-        for key, val in attrs.items():
-            self.assertEqual(val, response[key])
-
-
 class TemplateTagTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='me', email='me@example.com', password='1234')
-        self.invoice = Invoice.objects.create(name='cornflakes', amount_cents=200, date_deadline=dt.now())
+        self.account_info = AccountInfo.objects.create(account_number=1111111112, bank_code='3030')
+        self.invoice = Invoice.objects.create(name='cornflakes', amount_cents=200, date_deadline=dt.now(),
+                                              account_info=self.account_info)
         self.payment = Payment.objects.create(invoice=self.invoice, user=self.user)
 
     def test_get_item(self):
@@ -59,7 +41,7 @@ class TemplateTagTest(TestCase):
 
 class PopoTest(TestCase):
     def test_invoice_stats(self):
-        invoice_stats = InvoiceStats(id=0,
+        invoice_stats = InvoiceStats(i=0,
                                      n_total=[
                                          {'name': 'me',
                                           'age': 20},
