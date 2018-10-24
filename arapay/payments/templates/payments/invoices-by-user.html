@@ -58,14 +58,14 @@
                         {% endautoescape %}
                         </span>
                         {% if payment.var_symbol %}
-                            <span class="qr-code" style="background-image: url('https://api.paylibo.com/paylibo/generator/czech/image?compress=true&size=230&accountNumber={{ account_number_num }}&bankCode={{ account_number_bank }}&currency=CZK&vs={{ payment.var_symbol }}&date={{ i.date_deadline|date:'Y-m-d' }}&message=arapay-{{ i.name }}-{{ user.2 }}&amount={{ owed_amount }}');"></span>
+                            <span class="qr-code" style="background-image: url('https://api.paylibo.com/paylibo/generator/czech/image?compress=true&size=230&accountNumber={{ i.account_info.account_number }}&bankCode={{ i.account_info.bank_code }}&currency=CZK&vs={{ payment.var_symbol }}&date={{ i.date_deadline|date:'Y-m-d' }}&message=arapay-{{ i.name }}-{{ user.2 }}&amount={{ owed_amount }}');"></span>
                         {% else %}
                             <span class="qr-code"></span>
                         {% endif %}
                         <table class="invoice-payment-command table table-striped">
                             <tr>
                                 <td>Acc. #</td>
-                                <td class="text-right">{{ account_number }}</td>
+                                <td class="text-right">{{ i.account_info.account_number }}/{{ i.account_info.bank_code }}</td>
                             </tr>
                             <tr>
                                 <td>Var Symbol</td>
@@ -126,7 +126,7 @@
                         <table class="invoice-payment-command table table-striped">
                             <tr>
                                 <td>Acc. #</td>
-                                <td class="text-right">{{ account_number }}</td>
+                                <td class="text-right">{{ i.account_info.account_number }}/{{ i.account_info.bank_code }}</td>
                             </tr>
                             <tr>
                                 <td>Var Symbol</td>
@@ -177,7 +177,7 @@
                         <table class="invoice-payment-command table table-striped">
                             <tr>
                                 <td>Acc. #</td>
-                                <td class="text-right">{{ account_number }}</td>
+                                <td class="text-right">{{ i.account_info.account_number }}/{{ i.account_info.bank_code }}</td>
                             </tr>
                             <tr>
                                 <td>Var Symbol</td>
