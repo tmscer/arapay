@@ -28,9 +28,6 @@ def index(request):
             'overpaid': invoices_overpaid,
         },
         'groups': list(groups),
-        'account_number': '285621010/0300',
-        'account_number_num': '285621010',
-        'account_number_bank': '0300',
         'currency': 'CZK'
     }
     return render(request, 'payments/invoices.html', data)
@@ -111,9 +108,6 @@ def by_invoice(request):
         'invoices_user': invoice_users,
         'stats_all': stats_all,
         'groups': list(groups),
-        'account_number': '285621010/0300',
-        'account_number_num': '285621010',
-        'account_number_bank': '0300',
         'currency': 'CZK'
     }
     return render(request, 'payments/invoices-by-invoice.html', data)

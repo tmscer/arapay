@@ -32,8 +32,8 @@ def qr_code_url(invoice, payment, user):
     base_url = "https://api.paylibo.com/paylibo/generator/czech/image?compress=true&size=230"
     deadline = invoice.date_deadline
     args = {
-        'accountNumber': '285621010',
-        'bankCode': '0300',
+        'accountNumber': invoice.account_info.account_number,
+        'bankCode': invoice.account_info.bank_code,
         'currency': 'CZK',
         'vs': str(payment.var_symbol),
         'date': "{y}-{m}-{d}".format(y=deadline.year,
