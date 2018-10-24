@@ -62,9 +62,6 @@ def by_user(request):
         'user': request.user,
         'user_invoices': user_invoices,
         'groups': list(groups),
-        'account_number': '285621010/0300',
-        'account_number_num': '285621010',
-        'account_number_bank': '0300',
         'currency': 'CZK'
     }
     return render(request, 'payments/invoices-by-user.html', data)
