@@ -23,7 +23,6 @@ def user_supplier(fname):
 
 
 def password(l, arr=string.printable[:-5]):
-    global rand
     return "".join(rand.choice(arr) for _ in range(l))
 
 

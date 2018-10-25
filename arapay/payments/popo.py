@@ -14,10 +14,9 @@ class InvoiceStats:
 
     @property
     def paid_percentage(self):
-        if self.amount_cents_owed == 0:
-            return 0
-        else:
+        if self.amount_cents_owed:
             return 100 * self.amount_cents_paid / self.amount_cents_owed
+        return 0
 
     def __repr__(self):
         return "InvoiceStats(i={}, n_total={}, n_paid={}, n_unpaid={}, n_overpaid={}, " \
