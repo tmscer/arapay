@@ -118,7 +118,7 @@ def generate_var_symbol(request, user_id, invoice_id):
     groups = user.groups.all().values()
     group_ids = [g['id'] for g in groups]
     invoice_result = Invoice.objects.filter(id=invoice_id, groups__in=group_ids)
-    if len(invoice_result) != 0:
+    if invoice_result:
         invoice = invoice_result.get()
     else:
         return HttpResponse('{"error":"invoice.na"}')
@@ -128,7 +128,7 @@ def generate_var_symbol(request, user_id, invoice_id):
 
     def gen_var_symbol():
         vs = 10 ** 7 + random.randint(10 ** 5, 10 ** 6 - 1)
-        while len(Payment.objects.filter(var_symbol=vs)) > 0:
+        while Payment.objects.filter(var_symbol=vs):
             vs = 10 ** 7 + random.randint(10 ** 5, 10 ** 6 - 1)
         return vs
 
