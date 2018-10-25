@@ -1,33 +1,33 @@
-nav.main-nav {
+.main-nav {
     border-bottom: 2px solid #dddddd;
     margin-bottom: 2em;
 }
 
-nav.main-nav ul {
+.main-nav ul {
     padding: 0.5em;
 }
 
-nav.main-nav ul li {
+.main-nav ul li {
     margin-right: 20px;
 }
 
-section.groups {
+.groups {
     margin-bottom: 2em;
 }
 
-section.invoices article {
+.invoices article {
     margin-bottom: 2em;
 }
 
-tr.row-master {
+.row-master {
     cursor: pointer;
 }
 
-tr.row-detail > td {
+.row-detail > td {
     padding: 0;
 }
 
-tr.row-detail > td > div {
+.row-detail > td > div {
     max-height: 0;
     padding: 0 1em;
     box-sizing: border-box;
@@ -35,7 +35,7 @@ tr.row-detail > td > div {
     transition: max-height 0.3s, padding 0.3s;
 }
 
-tr.row-detail-active > td > div {
+.row-detail-active > td > div {
     max-height: 200px;
     padding: 1em;
     padding-bottom: 1.5em;x
@@ -43,7 +43,7 @@ tr.row-detail-active > td > div {
 }
 
 @media only screen and (max-width: 1000px) {
-    tr.row-detail-active > td > div {
+    .row-detail-active > td > div {
         max-height: 400px;
     }
 }
@@ -53,7 +53,6 @@ tr.row-detail-active > td > div {
 }
 
 .invoice-actions {
-    display: inline-block;
     float: right;
 }
 
@@ -153,4 +152,3 @@ tr.row-detail-active > td > div {
     margin-top: -1.2em;
     margin-right: 1em;
 }
-
