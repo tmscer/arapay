@@ -1,6 +1,7 @@
 from django.utils.encoding import escape_uri_path
 
 from payments.models import Invoice
+from django.db.models import Q
 
 
 def invoices_paid_unpaid_overpaid(user):
@@ -9,7 +10,8 @@ def invoices_paid_unpaid_overpaid(user):
     invoices_overpaid = []
 
     invoices_result = Invoice.objects \
-        .filter(groups__in=user.groups.all()) \
+        .filter(Q(groups__in=user.groups.all()) | Q(users__in=[user])) \
+        .distinct() \
         .order_by('-date_added')
 
     for invoice in invoices_result:
