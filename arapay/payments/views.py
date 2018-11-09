@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render
 from django.views.decorators.http import require_GET
+from django.db.models import Q
 
 from payments import helpers
 from payments.helpers import qr_code_url
@@ -78,7 +79,9 @@ def by_invoice(request):
 
     for invoice in Invoice.objects.order_by('-date_added'):
         users = User.objects \
-            .filter(groups__in=invoice.groups.all().values_list('id', flat=True)) \
+            .filter(Q(groups__in=invoice.groups.all().values_list('id', flat=True)) | 
+                    Q(id__in=invoice.users.all().values_list('id', flat=True))) \
+            .distinct() \
             .order_by('last_name')
         stats = InvoiceStats(invoice.id, len(users))
         stats.amount_cents_owed = stats.n_total * invoice.amount_cents
@@ -117,7 +120,7 @@ def generate_var_symbol(request, user_id, invoice_id):
     user = User.objects.get(id=user_id)
     groups = user.groups.all().values()
     group_ids = [g['id'] for g in groups]
-    invoice_result = Invoice.objects.filter(id=invoice_id, groups__in=group_ids)
+    invoice_result = Invoice.objects.filter(id=invoice_id)
     if invoice_result:
         invoice = invoice_result.get()
     else:
