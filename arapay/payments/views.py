@@ -1,16 +1,18 @@
+import json
 import random
 
 from django.contrib.auth.models import User
-from django.http import HttpResponse, HttpResponseForbidden
+from django.db.models import Q
+from django.http import HttpResponse, HttpResponseForbidden, HttpResponseBadRequest
 from django.shortcuts import render
 from django.views.decorators.http import require_GET
-from django.db.models import Q
 
 from payments import helpers
 from payments.helpers import qr_code_url
 from payments.models import Invoice, Payment
 from payments.popo import InvoiceStats
-import json
+
+from datetime import datetime as dt
 
 
 @require_GET
@@ -79,7 +81,7 @@ def by_invoice(request):
 
     for invoice in Invoice.objects.order_by('-date_added'):
         users = User.objects \
-            .filter(Q(groups__in=invoice.groups.all().values_list('id', flat=True)) | 
+            .filter(Q(groups__in=invoice.groups.all().values_list('id', flat=True)) |
                     Q(id__in=invoice.users.all().values_list('id', flat=True))) \
             .distinct() \
             .order_by('email')
@@ -111,6 +113,28 @@ def by_invoice(request):
         'currency': 'CZK'
     }
     return render(request, 'payments/invoices-by-invoice.html', data)
+
+
+def change_payment_status(request, user_id, payment_id):
+    if not request.user.is_authenticated or (user_id != request.user.id and not request.user.is_staff):
+        return HttpResponseForbidden()
+    try:
+        payment = Payment.objects.get(id=payment_id)
+    except Payment.DoesNotExist:
+        return HttpResponseBadRequest()
+    invoice = payment.invoice
+    if payment.amount_cents == invoice.amount_cents:
+        payment.amount_cents = 0
+        payment.date_paid = None
+        previous = 'PAID'
+        status = 'UNPAID'
+    else:
+        payment.amount_cents = invoice.amount_cents
+        payment.date_paid = dt.now()
+        status = 'PAID'
+        previous = 'UNPAID'
+    payment.save()
+    return HttpResponse(json.dumps({'status': status, 'previous': previous}))
 
 
 @require_GET
