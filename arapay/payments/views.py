@@ -39,7 +39,7 @@ def by_user(request):
     if not request.user.is_staff:
         return HttpResponseForbidden()
     groups = request.user.groups.all().values()
-    users = User.objects.order_by('last_name')
+    users = User.objects.order_by('email')
 
     user_invoices = {}
     for user in users:
@@ -82,7 +82,7 @@ def by_invoice(request):
             .filter(Q(groups__in=invoice.groups.all().values_list('id', flat=True)) | 
                     Q(id__in=invoice.users.all().values_list('id', flat=True))) \
             .distinct() \
-            .order_by('last_name')
+            .order_by('email')
         stats = InvoiceStats(invoice.id, len(users))
         stats.amount_cents_owed = stats.n_total * invoice.amount_cents
         current_users = {}
@@ -118,8 +118,6 @@ def generate_var_symbol(request, user_id, invoice_id):
     if not request.user.is_authenticated or (user_id != request.user.id and not request.user.is_staff):
         return HttpResponseForbidden()
     user = User.objects.get(id=user_id)
-    groups = user.groups.all().values()
-    group_ids = [g['id'] for g in groups]
     invoice_result = Invoice.objects.filter(id=invoice_id)
     if invoice_result:
         invoice = invoice_result.get()

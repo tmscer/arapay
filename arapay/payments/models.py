@@ -31,8 +31,8 @@ class Invoice(models.Model):
     date_added = models.fields.DateField('date added', default=dt.now)
     date_deadline = models.fields.DateField('date due')
     amount_cents = models.fields.BigIntegerField('amount in cents')
-    groups = models.ManyToManyField(Group)
-    users = models.ManyToManyField(User)
+    groups = models.ManyToManyField(Group, null=True)
+    users = models.ManyToManyField(User, null=True)
     account_info = models.ForeignKey(AccountInfo, on_delete=models.CASCADE, null=False)
 
     def __repr__(self):
