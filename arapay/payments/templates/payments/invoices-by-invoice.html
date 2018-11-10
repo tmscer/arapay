@@ -39,7 +39,10 @@
         <tr class="{% cycle '' 'grey-bg' %}">
             <td>{{ user.1 }}</td>
             <td>
-                <span class="solo-item payment-status payment-status-{{payment.status}}">{{ payment.status }}</span>
+                <button class="btn btn-primary solo-item payment-status payment-status-{{payment.status}}"
+                        onclick="change_payment_status('{% url 'payments:change_payment_status' user.0 payment.id %}', {{ user.0 }}, {{ invoice.0 }}, this)">
+                    {{ payment.status }}
+                </button>
             </td>
             <td class="text-right">{{ invoice.2|div:100 }} {{ currency }}</td>
             <td class="text-right">{{ payment.amount_cents|div:100 }} {{ currency }}</td>

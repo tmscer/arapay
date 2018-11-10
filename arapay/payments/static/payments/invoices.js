@@ -22,12 +22,24 @@ $(document).ready(function() {
 function generate_var_symbol(url, user_id, invoice_id, elem) {
     $.ajax({url: url, dataType: "json", success:
         function(result) {
-            console.log(result);
-            console.log(result["url"]);
             var parent = $(elem).parent();
             parent.parent().parent().parent().parent()
                 .find(".qr-code").css("background-image", "url(" + result["url"] + ")");
             parent.text(result["var_symbol"]);
+        }
+    });
+}
+
+function change_payment_status(url, user_id, payment_id, elem) {
+    $.ajax({url: url, dataType: "json", success:
+        function(result) {
+            console.log("what");
+            var previousStatus = result['previous'];
+            var status = result['status'];
+
+            elem.innerHTML = status;
+            $(elem).removeClass('payment-status-' + previousStatus.toLowerCase());
+            $(elem).addClass('payment-status-' + status.toUpperCase());
         }
     });
 }

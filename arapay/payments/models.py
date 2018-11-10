@@ -31,8 +31,8 @@ class Invoice(models.Model):
     date_added = models.fields.DateField('date added', default=dt.now)
     date_deadline = models.fields.DateField('date due')
     amount_cents = models.fields.BigIntegerField('amount in cents')
-    groups = models.ManyToManyField(Group)
-    users = models.ManyToManyField(User)
+    groups = models.ManyToManyField(Group, blank=True)
+    users = models.ManyToManyField(User, blank=True)
     account_info = models.ForeignKey(AccountInfo, on_delete=models.CASCADE, null=False)
 
     def __repr__(self):
@@ -51,7 +51,7 @@ class Payment(models.Model):
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     amount_cents = models.fields.BigIntegerField('amount in cents', default=0)
-    date_paid = models.fields.DateField('date paid', null=True)
+    date_paid = models.fields.DateField('date paid', blank=True, null=True)
     var_symbol = models.fields.PositiveIntegerField('associated var symbol', default=0,
                                                     validators=[MaxValueValidator(9999999999)])
 
