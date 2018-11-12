@@ -18,11 +18,11 @@ from django.urls import include, path
 from django.views.generic import RedirectView
 
 urlpatterns = [
-    path('p/', include('payments.urls', namespace="payments")),
-    path('', RedirectView.as_view(url='p/', permanent=False), name='index'),
+    path('', include('payments.urls', namespace="payments")),
+    path('p/', RedirectView.as_view(url='/', permanent=True), name='index'),
 
     # Google+ login
     path('', include('social_django.urls', namespace='social')),
-    path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/', include(('django.contrib.auth.urls', 'accounts'), namespace='accounts')),
     path('admin/', admin.site.urls),
 ]
