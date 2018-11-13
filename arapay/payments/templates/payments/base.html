@@ -16,7 +16,7 @@
             <ul class="nav">
                 {% if user.is_authenticated %}
                     <li>Logged in as <b>{{ user.email }}</b></li>
-                    <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
+                    <li><a href="/accounts/logout/?next=/">Logout</a></li>
                     <li><a href="{% url 'payments:index' %}">Me</a></li>
                     {% if user.is_staff %}
                         <li><a href="{% url 'payments:by_user' %}">Show by User</a></li>
