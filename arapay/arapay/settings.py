@@ -29,9 +29,9 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 # Security changes thanks to `manage.py check --deploy`
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = False
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
 X_FRAME_OPTIONS = 'DENY'
 
 # Application definition
