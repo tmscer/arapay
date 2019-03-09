@@ -3,9 +3,9 @@ import random
 
 from django.contrib.auth.models import User
 from django.db.models import Q
-from django.http import HttpResponse, HttpResponseForbidden, HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseForbidden, HttpResponseBadRequest, HttpResponseNotFound
 from django.shortcuts import render
-from django.views.decorators.http import require_GET
+from django.views.decorators.http import require_GET, require_POST
 
 from payments import helpers
 from payments.helpers import qr_code_url
@@ -116,12 +116,12 @@ def by_invoice(request):
 
 
 def change_payment_status(request, user_id, payment_id):
-    if not request.user.is_authenticated or (user_id != request.user.id and not request.user.is_staff):
+    if not request.user.is_authenticated or not request.user.is_staff:
         return HttpResponseForbidden()
     try:
-        payment = Payment.objects.get(id=payment_id)
+        payment = Payment.objects.get(id=payment_id, user=user_id)
     except Payment.DoesNotExist:
-        return HttpResponseBadRequest()
+        return HttpResponseNotFound()
     invoice = payment.invoice
     if payment.amount_cents == invoice.amount_cents:
         payment.amount_cents = 0
@@ -137,12 +137,14 @@ def change_payment_status(request, user_id, payment_id):
     return HttpResponse(json.dumps({'status': status, 'previous': previous}))
 
 
-@require_GET
+@require_POST
 def generate_var_symbol(request, user_id, invoice_id):
     if not request.user.is_authenticated or (user_id != request.user.id and not request.user.is_staff):
         return HttpResponseForbidden()
+
     user = User.objects.get(id=user_id)
     invoice_result = Invoice.objects.filter(id=invoice_id)
+
     if invoice_result:
         invoice = invoice_result.get()
     else:
