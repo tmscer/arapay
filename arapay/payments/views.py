@@ -8,6 +8,7 @@ from django.shortcuts import render
 from django.views.decorators.http import require_GET, require_POST
 
 from payments import helpers
+from payments.forms import InvoiceSearchForm
 from payments.helpers import qr_code_url
 from payments.models import Invoice, Payment
 from payments.popo import InvoiceStats
@@ -70,49 +71,25 @@ def by_user(request):
     return render(request, 'payments/invoices-by-user.html', data)
 
 
-@require_GET
-def by_invoice(request):
+def get_invoice(request):
     if not request.user.is_staff:
         return HttpResponseForbidden()
-    groups = request.user.groups.all().values()
+    invoices = []
+    if request.method == 'POST':
+        form = InvoiceSearchForm(request.POST)
+        if form.is_valid():
+            # Show Invoice
+            try:
+                invoice = Invoice.objects.get(pk=form['invoice_select'].value())
+            except Invoice.DoesNotExist:
+                return HttpResponseNotFound()
+            invoices = [invoice]
+    else:
+        form = InvoiceSearchForm()
 
-    invoice_users = {}
-    stats_all = {}
-
-    for invoice in Invoice.objects.order_by('-date_added'):
-        users = User.objects \
-            .filter(Q(groups__in=invoice.groups.all().values_list('id', flat=True)) |
-                    Q(id__in=invoice.users.all().values_list('id', flat=True))) \
-            .distinct() \
-            .order_by('email')
-        stats = InvoiceStats(invoice.id, len(users))
-        stats.amount_cents_owed = stats.n_total * invoice.amount_cents
-        current_users = {}
-        for user in users:
-            payment = invoice.payment_set.get_or_create(invoice=invoice, user=user)[0].__dict__
-            stats.amount_cents_paid += payment['amount_cents']
-            if invoice.amount_cents == payment['amount_cents']:
-                payment['status'] = 'paid'
-                stats.n_paid += 1
-            elif invoice.amount_cents > payment['amount_cents']:
-                payment['status'] = 'unpaid'
-                stats.n_unpaid += 1
-            else:
-                payment['status'] = 'overpaid'
-                stats.n_overpaid += 1
-            current_users[(user.id, user.email)] = payment
-        invoice_users[(invoice.id, invoice.name,
-                       invoice.amount_cents, invoice.date_added, invoice.date_deadline)] = current_users
-        stats_all[invoice.id] = stats.as_dict()
-
-    data = {
-        'user': request.user,
-        'invoices_user': invoice_users,
-        'stats_all': stats_all,
-        'groups': list(groups),
-        'currency': 'CZK'
-    }
-    return render(request, 'payments/invoices-by-invoice.html', data)
+    data = helpers.invoice_view(request, invoices)
+    data['form'] = form
+    return render(request, 'payments/invoices-invoices.html', data)
 
 
 @require_POST
