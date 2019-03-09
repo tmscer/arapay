@@ -36,7 +36,7 @@ function generate_var_symbol(url, user_id, invoice_id, elem) {
 function change_payment_status(url, user_id, payment_id, elem) {
     $.ajax({
             url: url,
-            type: "PUT",
+            type: "POST",
             dataType: "json",
             success: function(result) {
                 var previousStatus = result['previous'];

@@ -115,6 +115,7 @@ def by_invoice(request):
     return render(request, 'payments/invoices-by-invoice.html', data)
 
 
+@require_POST
 def change_payment_status(request, user_id, payment_id):
     if not request.user.is_authenticated or not request.user.is_staff:
         return HttpResponseForbidden()
