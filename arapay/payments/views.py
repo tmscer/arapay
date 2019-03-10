@@ -8,7 +8,7 @@ from django.shortcuts import render
 from django.views.decorators.http import require_GET, require_POST
 
 from payments import helpers
-from payments.forms import InvoiceSearchForm
+from payments.forms import InvoiceSelectForm, UserSelectForm
 from payments.helpers import qr_code_url
 from payments.models import Invoice, Payment
 from payments.popo import InvoiceStats
@@ -37,38 +37,25 @@ def index(request):
     return render(request, 'payments/invoices.html', data)
 
 
-@require_GET
 def by_user(request):
     if not request.user.is_staff:
         return HttpResponseForbidden()
-    groups = request.user.groups.all().values()
-    users = User.objects.order_by('email')
+    users = []
+    if request.method == 'POST':
+        form = UserSelectForm(request.POST)
+        if form.is_valid():
+            # Show User
+            try:
+                user = User.objects.get(pk=form['user_select'].value())
+            except Invoice.DoesNotExist:
+                return HttpResponseNotFound()
+            users = [user]
+    else:
+        form = UserSelectForm()
 
-    user_invoices = {}
-    for user in users:
-        user_key = (user.id, user.email, user.username)
-        invoices_paid, invoices_unpaid, invoices_overpaid = helpers.invoices_paid_unpaid_overpaid(user)
-        stats = InvoiceStats(user.id, len(invoices_paid) + len(invoices_unpaid) + len(invoices_overpaid))
-        stats.n_paid = len(invoices_paid)
-        stats.n_unpaid = len(invoices_unpaid)
-        stats.n_overpaid = len(invoices_overpaid)
-        for invoice in invoices_paid + invoices_unpaid + invoices_overpaid:
-            stats.amount_cents_owed += invoice.amount_cents
-            stats.amount_cents_paid += invoice.payment_set.get(user_id=user.id).amount_cents
-        user_invoices[user_key] = {
-            'paid': invoices_paid,
-            'unpaid': invoices_unpaid,
-            'overpaid': invoices_overpaid,
-            'stats': stats.as_dict(),
-        }
-
-    data = {
-        'user': request.user,
-        'user_invoices': user_invoices,
-        'groups': list(groups),
-        'currency': 'CZK'
-    }
-    return render(request, 'payments/invoices-by-user.html', data)
+    data = helpers.user_invoice_view(request, users)
+    data['form'] = form
+    return render(request, 'payments/invoices-user.html', data)
 
 
 def get_invoice(request):
@@ -76,7 +63,7 @@ def get_invoice(request):
         return HttpResponseForbidden()
     invoices = []
     if request.method == 'POST':
-        form = InvoiceSearchForm(request.POST)
+        form = InvoiceSelectForm(request.POST)
         if form.is_valid():
             # Show Invoice
             try:
@@ -85,7 +72,7 @@ def get_invoice(request):
                 return HttpResponseNotFound()
             invoices = [invoice]
     else:
-        form = InvoiceSearchForm()
+        form = InvoiceSelectForm()
 
     data = helpers.invoice_view(request, invoices)
     data['form'] = form

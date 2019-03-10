@@ -1,10 +1,43 @@
-from django.shortcuts import render
+from django.db.models import Q
 from django.utils.encoding import escape_uri_path
 
 from payments.models import Invoice, User
-from django.db.models import Q
-
 from payments.popo import InvoiceStats
+
+
+def user_invoice_view(request, users):
+    groups = request.user.groups.all().values()
+    user_invoices = user_invoice_data(users)
+
+    data = {
+        'user': request.user,
+        'user_invoices': user_invoices,
+        'groups': list(groups),
+        'currency': 'CZK'
+    }
+    return data
+
+
+def user_invoice_data(users):
+    user_invoices = {}
+    for user in users:
+        user_key = (user.id, user.email, user.username)
+        invoices_paid, invoices_unpaid, invoices_overpaid = invoices_paid_unpaid_overpaid(user)
+        stats = InvoiceStats(user.id, len(invoices_paid) + len(invoices_unpaid) + len(invoices_overpaid))
+        stats.n_paid = len(invoices_paid)
+        stats.n_unpaid = len(invoices_unpaid)
+        stats.n_overpaid = len(invoices_overpaid)
+        for invoice in invoices_paid + invoices_unpaid + invoices_overpaid:
+            stats.amount_cents_owed += invoice.amount_cents
+            stats.amount_cents_paid += invoice.payment_set.get(user_id=user.id).amount_cents
+        user_invoices[user_key] = {
+            'paid': invoices_paid,
+            'unpaid': invoices_unpaid,
+            'overpaid': invoices_overpaid,
+            'stats': stats.as_dict(),
+            'groups': list(user.groups.all().values()),
+        }
+    return user_invoices
 
 
 def invoice_view(request, invoices):
