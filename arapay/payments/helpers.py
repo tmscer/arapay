@@ -35,6 +35,7 @@ def user_invoice_data(users):
             'unpaid': invoices_unpaid,
             'overpaid': invoices_overpaid,
             'stats': stats.as_dict(),
+            'groups': list(user.groups.all().values()),
         }
     return user_invoices
 

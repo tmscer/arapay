@@ -32,6 +32,13 @@
 
 <h2>{{ user.1 }}</h2>
 
+<section class="groups">
+    <h3>This user belongs in these groups:</h3>
+    {% for group in invoices.groups %}
+    <span class="solo-item blue-bg">{{ group.name }}</span>
+    {% endfor %}
+</section>
+
 <section class="invoices">
 
     {% if invoices.unpaid %}
