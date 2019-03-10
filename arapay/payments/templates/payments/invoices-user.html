@@ -17,6 +17,15 @@
     {% endfor %}
 </section>
 
+<form method="POST">{% csrf_token %}
+    <div class="form-group">
+        {{ form.as_p }}
+        <button class="btn btn-info btn-large"
+                type="submit">Retrieve
+        </button>
+    </div>
+</form>
+
 {% if user_invoices %}
 
 {% for user, invoices in user_invoices.items %}
