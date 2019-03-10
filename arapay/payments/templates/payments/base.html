@@ -20,7 +20,7 @@
                     <li><a href="{% url 'payments:index' %}">Me</a></li>
                     {% if user.is_staff %}
                         <li><a href="{% url 'payments:by_user' %}">Show by User</a></li>
-                        <li><a href="{% url 'payments:by_invoice' %}">Show by Invoice</a></li>
+                        <li><a href="{% url 'payments:invoice' %}">Show an Invoice</a></li>
                         <li><a href="/admin">Admin</a></li>
                     {% endif %}
                 {% else %}
