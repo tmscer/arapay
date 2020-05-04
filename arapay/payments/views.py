@@ -1,9 +1,9 @@
 import json
 import random
+from datetime import datetime as dt
 
 from django.contrib.auth.models import User
-from django.db.models import Q
-from django.http import HttpResponse, HttpResponseForbidden, HttpResponseBadRequest, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseForbidden, HttpResponseNotFound
 from django.shortcuts import render
 from django.views.decorators.http import require_GET, require_POST
 
@@ -11,9 +11,6 @@ from payments import helpers
 from payments.forms import InvoiceSelectForm, UserSelectForm
 from payments.helpers import qr_code_url
 from payments.models import Invoice, Payment
-from payments.popo import InvoiceStats
-
-from datetime import datetime as dt
 
 
 @require_GET
