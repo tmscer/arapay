@@ -13,3 +13,5 @@ source ./venv/bin/activate
 pip3 install -r requirements.txt
 python3 arapay/manage.py migrate
 ```
+
+A secrets file from Google console is required. The path to it can be changed in settings.py. Or supply the credentials through environment variables.
